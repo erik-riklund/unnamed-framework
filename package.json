@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "dependencies": {
+    "bun": "latest"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

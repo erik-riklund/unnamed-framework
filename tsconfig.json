@@ -1,0 +1,35 @@
+{
+  "compilerOptions":
+  {
+    "allowJs": true,
+
+    "lib": [ "ESNext", "DOM" ],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    "strict": true,
+    "skipLibCheck": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false,
+    "noPropertyAccessFromIndexSignature": false,
+
+    "paths": {
+      "module/*": [
+        "./modules/*"
+      ]
+    }
+  },
+
+  "exclude": [ "node_modules" ]
+}
