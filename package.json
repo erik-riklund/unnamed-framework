@@ -1,9 +1,21 @@
 {
   "private": true,
   "dependencies": {
-    "bun": "latest"
+    "chalk": "latest"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "npm-run-all": "latest",
+    "wait-on": "latest"
+  },
+  "peerDependencies": {
+    "bun": "latest"
+  },
+  "scripts": {
+    "build": "echo 'Building runtime artifacts...'",
+    "serve": "bun run './core/index.ts'",
+    "serve-dev": "wait-on './runtime/routes.ts' && bun run --watch './core/index.ts'",
+    "start": "npm-run-all build serve",
+    "start-dev": "npm-run-all --parallel build serve-dev"
   }
 }

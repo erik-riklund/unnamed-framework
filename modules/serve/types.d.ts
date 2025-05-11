@@ -95,13 +95,13 @@ export interface ServerConfig
      * The folder from which to serve static files.
      * - default `./assets`
      */
-    folder: string;
+    folder?: string;
 
     /**
      * The route to serve static files from.
      * - default `/assets/*`
      */
-    route: string;
+    route?: string;
   };
 
   /**

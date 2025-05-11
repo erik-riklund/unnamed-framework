@@ -7,6 +7,7 @@ import type {
   ServerConfig
 } from './types';
 
+import chalk from 'chalk'
 import { file, serve, type BunRequest } from 'bun';
 export { middleware } from './middleware';
 export { HttpMethod } from './types.d';
@@ -16,7 +17,7 @@ export { HttpMethod } from './types.d';
  * 
  * @param config - The server configuration object containing routes, middlewares, and other settings.
  */
-export const useServer = (
+export const useServe = (
   { assets, middlewares, port, routes }: ServerConfig) =>
 {
   const assetOptions = {
@@ -45,6 +46,9 @@ export const useServer = (
       port: process.env.PORT || port || 800,
     }
   );
+
+  console.log(chalk.yellow(`Server is running on port ${ process.env.PORT || port || 800 }:`));
+  console.log(`> serving static files from "${ assetOptions.folder }" at '${ assetOptions.route }'`);
 };
 
 /**

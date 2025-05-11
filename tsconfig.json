@@ -25,8 +25,30 @@
     "noPropertyAccessFromIndexSignature": false,
 
     "paths": {
+      "api": [
+        "./app/routes/api/*.ts",
+        "./app/routes/api/*"
+      ],
+      "core":[
+        "./core/index.ts"
+      ],
       "module/*": [
+        "./modules/*/index.ts",
+        "./modules/*/types.d.ts",
         "./modules/*"
+      ],
+      "page/*": [
+        "./app/routes/-pages/*.ts",
+        "./app/routes/-pages/*"
+      ],
+      "runtime/*": [
+        "./runtime/*.ts",
+        "./runtime/*.js",
+        "./runtime/*"
+      ],
+      "ui/*": [
+        "./app/ui/*.fml",
+        "./app/ui/*"
       ]
     }
   },
