@@ -39,8 +39,8 @@ const initializeProjectStructure = async (projectName: string) =>
 
   if (await exists(absoluteFolderPath))
   {
-    // console.error('A project with the given name already exists.');
-    // return; // early exit - the destination directory already exists.
+    console.error('A project with the given name already exists.');
+    return; // early exit - the destination directory already exists.
   }
 
   try
