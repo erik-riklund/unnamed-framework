@@ -7,8 +7,9 @@ import type {
   ServerConfig
 } from './types';
 
-import chalk from 'chalk'
+import chalk from 'chalk';
 import { file, serve, type BunRequest } from 'bun';
+import { HttpMethod } from './types.d';
 export { middleware } from './middleware';
 export { HttpMethod } from './types.d';
 
@@ -67,13 +68,14 @@ const createRoutePipelines = (routes: RouteDeclaration[],
    * @param routePath - The path of the route for which to create the middleware stack.
    * @return An array of middleware handlers that should be executed for the given route path.
    */
-  const createMiddlewareStack = (routePath: string) =>
+  const createMiddlewareStack = (routeMethod: HttpMethod, routePath: string) =>
   {
     const stack: MiddlewareHandler[] = [];
 
-    for (const { path, handler } of middlewares)
+    for (const { handler, method, path } of middlewares)
     {
-      if (path === '*' || path === routePath || routePath.startsWith(`${ path }/`))
+      if ((path === '*' || path === routePath || routePath.startsWith(`${ path }/`))
+        && (method as string === 'ANY' || method === routeMethod))
       {
         stack.push(handler); // the middleware is added to the stack.
       }
@@ -100,26 +102,26 @@ const createRoutePipelines = (routes: RouteDeclaration[],
    */
   for (const { path, method, handler } of routes)
   {
-    const middlewareStack = createMiddlewareStack(path);
+    const middlewareStack = createMiddlewareStack(method, path);
 
-    pipelines[path] =
+    pipelines[path] = pipelines[path] || {};
+
+
+    pipelines[path][method as string] = async (request) =>
     {
-      [method as string]: async (request) =>
+      const context = createRequestContext(request);
+
+      for (const middleware of middlewareStack)
       {
-        const context = createRequestContext(request);
+        const response = await middleware(context);
 
-        for (const middleware of middlewareStack)
+        if (response instanceof Response)
         {
-          const response = await middleware(context);
-
-          if (response instanceof Response)
-          {
-            return response; // return the intercepted response.
-          }
+          return response; // return the intercepted response.
         }
-
-        return await handler(context);
       }
+
+      return await handler(context);
     };
   }
 

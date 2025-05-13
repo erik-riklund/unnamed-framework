@@ -44,6 +44,11 @@ interface Declaration<H extends Handler<any>>
   handler: H;
 
   /**
+   * The HTTP method associated with the handler.
+   */
+  method: HttpMethod;
+
+  /**
    * The path or route associated with the handler.
    */
   path: string;
@@ -144,7 +149,7 @@ export type MiddlewareHandler = Handler<MaybeVoid<Response>>;
 /**
  * Represents a route declaration that associates a handler with a specific HTTP method and path.
  */
-export type RouteDeclaration = Declaration<RouteHandler> & { method: HttpMethod; };
+export type RouteDeclaration = Declaration<RouteHandler>;
 
 /**
  * Represents a route handler function that processes incoming requests and returns a response.

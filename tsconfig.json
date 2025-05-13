@@ -30,7 +30,11 @@
         "./app/routes/api/*"
       ],
       "core":[
-        "./core/index.ts"
+        "./core/index.ts",
+      ],
+      "core/*": [
+        "./core/*.ts",
+        "./core/*"
       ],
       "module/*": [
         "./modules/*/index.ts",

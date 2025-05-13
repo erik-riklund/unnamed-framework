@@ -1,4 +1,6 @@
 import { file, Glob } from 'bun';
+import { dirname } from 'node:path';
+import { compileString } from 'sass';
 import { compile } from 'module/compile';
 
 /**
@@ -41,11 +43,21 @@ export const processTemplates = async (
   sourceFolder: string, targetFolder: string) =>
 {
   const files = new Glob('**/*.fml');
+  const metadata: Record<string, string[]> = {};
 
   for await (const relativeFilePath of files.scan(sourceFolder))
   {
-    processTemplate(`${ sourceFolder }/${ relativeFilePath }`, targetFolder);
+    const template = await processTemplate(
+      `${ sourceFolder }/${ relativeFilePath }`, targetFolder
+    );
+
+    if (template.dependencies)
+    {
+      metadata[template.name] = template.dependencies;
+    }
   }
+
+  await file(`${ targetFolder }/metadata.json`).write(JSON.stringify(metadata, null, 2));
 };
 
 /**
@@ -61,11 +73,13 @@ export const processTemplate = async (
   const sourceFile = file(sourceFilePath);
   const { template, directives } = processTemplateLines(await sourceFile.text());
 
+  const isUpdate = templates.size > 0;
+
   if (!directives.export)
   {
     throw new Error(`Template "${ sourceFilePath }" is missing an export directive.`);
   }
-  else if (templates.has(directives.export))
+  else if (!isUpdate && templates.has(directives.export))
   {
     throw new Error(`There is already a template with the name "${ directives.export }".`);
   }
@@ -88,10 +102,16 @@ export const processTemplate = async (
       }
     }
 
-    content.push(`export default ${ compile.toString(template, {}, { recursive: directives.recursive }) };`);
+    const compileOptions = { recursive: directives.recursive };
+    const compiledTemplate = compile.toString(template, {}, compileOptions);
 
-    await targetFile.write(content.join('\n'));
+    content.push(`export default ${ compiledTemplate }`);
+
+    await targetFile.write(content.join(''));
   }
+
+  processTemplateStyles(sourceFilePath, targetFolder, directives);
+  return { name: directives.export, dependencies: directives.include };
 };
 
 /**
@@ -135,4 +155,30 @@ const processTemplateLines = (content: string) =>
   }
 
   return { template: template.join('\n').trim(), directives };
+};
+
+/**
+ * Processes the styles of a template file, compiling them to CSS.
+ * 
+ * @param sourceFilePath - The path to the source template file.
+ * @param targetFolder - The folder where the compiled styles will be saved.
+ * @param directives - The directives extracted from the template file.
+ */
+export const processTemplateStyles = async (
+  sourceFilePath: string, targetFolder: string, directives: Directives) =>
+{
+  const sourceFolder = dirname(sourceFilePath);
+  const styleFile = file(`${ sourceFolder }/styles.scss`);
+
+  if (await styleFile.exists())
+  {
+    const targetFile = file(`${ targetFolder }/${ directives.export }.css`);
+
+    if (!await targetFile.exists() || targetFile.lastModified < styleFile.lastModified)
+    {
+      const styleContent = await styleFile.text();
+      
+      await targetFile.write(compileString(styleContent).css);
+    }
+  }
 };
