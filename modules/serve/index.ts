@@ -17,8 +17,7 @@ export { HttpMethod } from './types.d';
  * 
  * @param config - The server configuration object containing routes, middlewares, and other settings.
  */
-export const useServe = (
-  { assets, middlewares, port, routes }: ServerConfig) =>
+export const useServe = ({ assets, middlewares, port, routes }: ServerConfig) =>
 {
   const assetOptions = {
     folder: assets?.folder || './assets',
@@ -47,8 +46,8 @@ export const useServe = (
     }
   );
 
-  console.log(chalk.yellow(`Server is running on port ${ process.env.PORT || port || 800 }:`));
-  console.log(`> serving static files from "${ assetOptions.folder }" at '${ assetOptions.route }'`);
+  console.log(chalk.green(`Server is running on port ${ process.env.PORT || port || 800 }.`));
+  console.log(`- serving static files at ${ chalk.yellow(assetOptions.route) } from ${ chalk.yellow(assetOptions.folder) }`);
 };
 
 /**
