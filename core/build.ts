@@ -19,7 +19,7 @@ const folders =
 {
   endpoints: { source: './app/routes/api', target: './runtime/endpoints.ts' },
   templates: { source: './app/ui', target: './runtime/templates' },
-  views: { source: './app/routes/pages', target: './runtime/views.js' },
+  views: { source: './app/routes/pages', target: './runtime/views.ts' },
 };
 
 /**
@@ -37,12 +37,16 @@ await Promise.all([
  */
 if (process.argv.includes('--dev'))
 {
+  // endpoints
+  watch(folders.endpoints.source, { recursive: true },
+    async (e) => e === 'rename' && await initializeEndpoints(folders.endpoints.source, folders.endpoints.target)
+  );
   // templates
   watch(folders.templates.source, { recursive: true },
     async () => await processTemplates(folders.templates.source, folders.templates.target)
   );
   // views
   watch(folders.views.source, { recursive: true },
-    async () => await initializeViews(folders.views.source, folders.views.target)
+    async (e) => e === 'rename' && await initializeViews(folders.views.source, folders.views.target)
   );
 }

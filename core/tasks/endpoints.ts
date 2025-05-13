@@ -43,7 +43,7 @@ export const initializeEndpoints = async (sourceFolder: string, targetFile: stri
         ([httpMethod, importId]) =>
         {
           declarations.push(
-            `  { path: '${ routePath }', method: HttpMethod.${ httpMethod }, handler: ${ importId } },`
+            `{ path: '${ routePath }', method: HttpMethod.${ httpMethod }, handler: ${ importId } },`
           );
         }
       );

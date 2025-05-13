@@ -32,6 +32,9 @@
       "core":[
         "./core/index.ts",
       ],
+      "core/types": [
+        "./core/types.d.ts",
+      ],
       "core/*": [
         "./core/*.ts",
         "./core/*"

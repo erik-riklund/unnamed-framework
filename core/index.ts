@@ -9,7 +9,7 @@ import { views } from 'runtime/views';
 useServe(
   {
     // middlewares,
-    routes: [ ...endpoints, /*...views*/],
+    routes: [ ...endpoints, ...views],
 
     assets: {
       folder: './app/assets'
