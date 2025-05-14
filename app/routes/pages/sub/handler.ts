@@ -1,8 +1,8 @@
-import type { ViewHandler } from 'core/types';
+import type { PageHandler } from 'core/types';
 
 /**
  * ?
  */
-const handler: ViewHandler = async () => ({});
+const handler: PageHandler = async () => ({});
 
 export default handler;

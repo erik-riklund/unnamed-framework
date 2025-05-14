@@ -1,10 +1,12 @@
 {
   "private": true,
   "dependencies": {
-    "chalk": "^5.4.1"
+    "chalk": "^5.4.1",
+    "html-minifier": "^4.0.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/html-minifier": "^4.0.5",
     "npm-run-all": "^4.1.5",
     "sass": "^1.88.0",
     "wait-on": "^8.0.3"
@@ -16,7 +18,7 @@
     "build": "bun run './core/build.ts'",
     "build-dev": "bun run --watch './core/build.ts' --dev",
     "serve": "bun run './core/index.ts'",
-    "serve-dev": "wait-on './runtime/views.ts' && bun run --watch './core/index.ts'",
+    "serve-dev": "wait-on './runtime/pages.ts' && bun run --watch './core/index.ts'",
     "start": "npm-run-all build serve",
     "start-dev": "npm-run-all --parallel build-dev serve-dev"
   }

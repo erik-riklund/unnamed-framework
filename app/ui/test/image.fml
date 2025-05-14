@@ -1,5 +1,16 @@
 @export image;
 
-<img data-template="image"
-     src="/assets/images/test.png"
-     alt="This is a test!">
+<!-- Begin image template -->
+<div class="image-component">
+  <img data-template="image"
+       src="{{ source }}"
+       alt="{{ description }}">
+  <div class="image-description">
+    {{ description }}
+  </div>
+  <p>
+    So this is a test of the image template,
+    where we are testing how it's min`ified.
+  </p>
+</div>
+<!-- End image template -->

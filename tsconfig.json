@@ -45,8 +45,8 @@
         "./modules/*"
       ],
       "page/*": [
-        "./app/routes/-pages/*.ts",
-        "./app/routes/-pages/*"
+        "./app/routes/pages/*.ts",
+        "./app/routes/pages/*"
       ],
       "runtime/*": [
         "./runtime/*.ts",

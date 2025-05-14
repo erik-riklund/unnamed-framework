@@ -7,7 +7,19 @@ import type {
 } from './types';
 
 /**
- * ?
+ * The utility functions that are included in the compiled template.
+ */
+const helperFunctions =
+{
+  v: `const v=(t)=>typeof t==='function'?t():t;`,
+  c: `const c=(a,b)=>typeof a==='number'?a===parseInt(b):a===b;`,
+  s: `const s=(t)=>typeof t!=='string'?t?.toString():t;`,
+  e: `const e=(t)=>typeof t==='string'&&t.replaceAll('<','&lt;').replaceAll('>','&gt;')||t;`,
+  r: `const r=(t)=>Array.isArray(t)?t.length>0:(t!==false&&t!==null&&t!==undefined);`
+};
+
+/**
+ * Creates a context variable path for the given variable.
  * 
  * @param variable - The variable to be transformed.
  * @returns The transformed variable path.
@@ -16,7 +28,7 @@ const createContextVariablePath = (
   variable: string): string => `self.${ variable.replaceAll('.', '?.') }`;
 
 /**
- * ?
+ * Creates a local variable path for the given variable.
  * 
  * @param variable - The variable path to be transformed.
  * @returns The transformed variable path.
@@ -339,22 +351,31 @@ const compileDependencies = (dependencies: Dependencies): string =>
 const compileTemplate = (template: Template,
   dependencies: Dependencies = {}, helpers: boolean = true): string =>
 {
-  const helperFunctions =
-    `const v=(t)=>typeof t==='function'?t():t;` +
-    `const c=(a,b)=>typeof a==='number'?a===parseInt(b):a===b;` +
-    `const s=(t)=>typeof t!=='string'?t?.toString():t;` +
-    `const e=(t)=>typeof t==='string'&&t.replaceAll('<','&lt;').replaceAll('>','&gt;')||t;` +
-    `const r=(t)=>Array.isArray(t)?t.length>0:(t!==false&&t!==null&&t!==undefined);`;
-
   let body = [
     `self=self||{};parent=parent||{};`,
-    helpers !== false ? helperFunctions : '',
+    helpers !== false ? Object.values(helperFunctions).join('') : '',
     compileDependencies(dependencies),
     `if(self.__children){self.__children_r=self.__children()}`,
-    `return \`${ parseElements(template) }\`;`
+    `return \`${ parseElements(template.replaceAll('`','\\`')) }\`;`
   ];
 
-  return body.join('');
+  return removeUnusedHelpers(body.join(''));
+};
+
+/**
+ * ?
+ */
+const removeUnusedHelpers = (template: Template): Template =>
+{
+  for (const [key, helper] of Object.entries(helperFunctions))
+  {
+    if (!template.includes(`${ key }(`))
+    {
+      template = template.replace(helper, '');
+    }
+  }
+
+  return template;
 };
 
 /**

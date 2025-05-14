@@ -1,7 +1,9 @@
 import { rmSync, watch } from 'node:fs';
 import { initializeEndpoints } from './tasks/endpoints';
-import { initializeViews } from './tasks/views';
+import { initializePages } from './tasks/pages';
 import { processTemplates } from './tasks/templates';
+
+console.log('Build process started...');
 
 /**
  * Clean the runtime folder in preparation for the build if the `--no-clean` flag is not passed.
@@ -9,7 +11,7 @@ import { processTemplates } from './tasks/templates';
  */
 if (!process.argv.includes('--no-clean'))
 {
-  rmSync('./runtime', { recursive: true });
+  rmSync('./runtime', { recursive: true, force: true });
 }
 
 /**
@@ -18,8 +20,8 @@ if (!process.argv.includes('--no-clean'))
 const folders =
 {
   endpoints: { source: './app/routes/api', target: './runtime/endpoints.ts' },
+  pages: { source: './app/routes/pages', target: './runtime/pages' },
   templates: { source: './app/ui', target: './runtime/templates' },
-  views: { source: './app/routes/pages', target: './runtime/views.ts' },
 };
 
 /**
@@ -27,8 +29,8 @@ const folders =
  */
 await Promise.all([
   initializeEndpoints(folders.endpoints.source, folders.endpoints.target),
-  initializeViews(folders.views.source, folders.views.target),
-  processTemplates(folders.templates.source, folders.templates.target),
+  initializePages(folders.pages.source, folders.pages.target),
+  processTemplates(folders.templates.source, folders.templates.target)
 ]);
 
 /**
@@ -41,12 +43,12 @@ if (process.argv.includes('--dev'))
   watch(folders.endpoints.source, { recursive: true },
     async (e) => e === 'rename' && await initializeEndpoints(folders.endpoints.source, folders.endpoints.target)
   );
+  // pages
+  watch(folders.pages.source, { recursive: true },
+    async () => await initializePages(folders.pages.source, folders.pages.target)
+  );
   // templates
   watch(folders.templates.source, { recursive: true },
     async () => await processTemplates(folders.templates.source, folders.templates.target)
-  );
-  // views
-  watch(folders.views.source, { recursive: true },
-    async (e) => e === 'rename' && await initializeViews(folders.views.source, folders.views.target)
   );
 }

@@ -1,4 +1,5 @@
 import { file, Glob } from 'bun';
+import { minify } from 'html-minifier';
 import { dirname } from 'node:path';
 import { compileString } from 'sass';
 import { compile } from 'module/compile';
@@ -39,8 +40,7 @@ const templates = new Map<string, boolean>();
  * @param sourceFolder - The folder containing the template files.
  * @param targetFolder - The folder where the compiled templates will be saved.
  */
-export const processTemplates = async (
-  sourceFolder: string, targetFolder: string) =>
+export const processTemplates = async (sourceFolder: string, targetFolder: string) =>
 {
   const files = new Glob('**/*.fml');
   const metadata: Record<string, string[]> = {};
@@ -67,8 +67,7 @@ export const processTemplates = async (
  * @param sourceFilePath - The path to the source template file.
  * @param targetFolder - The folder where the compiled template will be saved.
  */
-export const processTemplate = async (
-  sourceFilePath: string, targetFolder: string) =>
+export const processTemplate = async (sourceFilePath: string, targetFolder: string) =>
 {
   const sourceFile = file(sourceFilePath);
   const { template, directives } = processTemplateLines(await sourceFile.text());
@@ -103,7 +102,8 @@ export const processTemplate = async (
     }
 
     const compileOptions = { recursive: directives.recursive };
-    const compiledTemplate = compile.toString(template, {}, compileOptions);
+    const minifiedTemplate = minify(template, { removeComments: true, collapseWhitespace: true });
+    const compiledTemplate = compile.toString(minifiedTemplate, {}, compileOptions);
 
     content.push(`export default ${ compiledTemplate }`);
 
@@ -164,7 +164,7 @@ const processTemplateLines = (content: string) =>
  * @param targetFolder - The folder where the compiled styles will be saved.
  * @param directives - The directives extracted from the template file.
  */
-export const processTemplateStyles = async (
+const processTemplateStyles = async (
   sourceFilePath: string, targetFolder: string, directives: Directives) =>
 {
   const sourceFolder = dirname(sourceFilePath);
@@ -177,8 +177,8 @@ export const processTemplateStyles = async (
     if (!await targetFile.exists() || targetFile.lastModified < styleFile.lastModified)
     {
       const styleContent = await styleFile.text();
-      
-      await targetFile.write(compileString(styleContent).css);
+
+      await targetFile.write(compileString(styleContent, { style: 'compressed' }).css);
     }
   }
 };

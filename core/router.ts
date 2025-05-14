@@ -1,6 +1,9 @@
+import { minify } from 'html-minifier';
 import { dirname } from 'node:path';
+
+import type { PageHandler } from './types';
+import type { RenderFunction } from 'module/compile/types';
 import type { RequestContext } from 'module/serve/types';
-import { serve } from 'bun';
 
 /**
  * Creates a route path from a file path.
@@ -35,23 +38,29 @@ export const createRoutePath = (filePath: string, prefix: string = '') =>
 /**
  * ?
  */
-export const serveView = async (viewPath: string, context: RequestContext) =>
+export const servePage = async (
+  pageId: string, view: RenderFunction, context: RequestContext,
+  dependencies: string[], handler?: PageHandler) =>
 {
-  return context.html('Hello world');
+  if (typeof handler === 'function')
+  {
+    context.data = { ...context.data, ...await handler() };
+  }
+
+  const renderedView = view(context.data);
+
+  // 1. Load the stylesheets for the page and its dependencies.
+  // 2. Remove unused styles and optimize the stylesheets.
+  // 3. Minify and return the rendered view.
+
+  return context.html(renderedView);
 };
 
 /**
- * Serves a view that is accompanied by a handler.
- * 
- * @param viewPath - The path to the view file.
- * @param context - The request context.
- * @param handler - The handler function that returns a promise of data to be merged into the context.
+ * ?
  */
-export const serveViewWithHandler = async (
-  viewPath: string, context: RequestContext,
-  handler: () => MaybePromise<Record<string, unknown>>) =>
+const loadPageStyles = async (
+  pageId: string, dependencies: string[]) =>
 {
-  context.data = { ...context.data, ...await handler() };
-
-  return serveView(viewPath, context);
+  // ...
 };

@@ -1,7 +1,7 @@
 import { useServe } from 'module/serve';
 import { endpoints } from 'runtime/endpoints';
 // import { middlewares } from 'runtime/middlewares';
-import { views } from 'runtime/views';
+import { pages } from 'runtime/pages';
 
 /**
  * ?
@@ -9,7 +9,7 @@ import { views } from 'runtime/views';
 useServe(
   {
     // middlewares,
-    routes: [ ...endpoints, ...views],
+    routes: [ ...endpoints, ...pages ],
 
     assets: {
       folder: './app/assets'
