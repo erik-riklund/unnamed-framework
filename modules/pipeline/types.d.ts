@@ -6,23 +6,25 @@ export interface Pipeline
   /**
    * A record of tasks in the pipeline.
    */
-  tasks: Record<string, PipelineFunction<any>>;
+  tasks: Record<string, PipelineFunction<any, any>>;
 
   /**
    * Executes the specified sequence of tasks in the pipeline.
    * 
    * @param tasks - An array of task names to execute in sequence.
-   * @param context - The shared context to pass to each task.
+   * @param input - The input to pass to the first task in the sequence.
+   * @returns The result of the last task in the sequence.
    */
-  executeSequence (tasks: string[], context: any): void;
+  executeSequence<I = any, R = any> (tasks: string[], input: I): R;
 
   /**
    * Executes the specified task in the pipeline.
    * 
    * @param name - The name of the task to execute.
-   * @param context - The context to pass to the task.
+   * @param input - The input to pass to the task.
+   * @returns The result of the task.
    */
-  executeTask (name: string, context: any): void;
+  executeTask<I = any, R = any> (name: string, input: I): R;
 
   /**
    * Registers a new task in the pipeline.
@@ -30,10 +32,10 @@ export interface Pipeline
    * @param name - The name of the task to register.
    * @param task - The function that defines the task.
    */
-  registerTask (name: string, task: PipelineFunction<any>): void;
+  registerTask (name: string, task: PipelineFunction<any, any>): void;
 }
 
 /**
  * Represents a function that defines a task in the pipeline.
  */
-export type PipelineFunction<C> = (pipeline: Pipeline, context: C) => void;
+export type PipelineFunction<I, R> = (pipeline: Pipeline, input: I) => R;

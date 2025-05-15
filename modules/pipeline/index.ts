@@ -8,22 +8,26 @@ export const usePipeline = (): Pipeline =>
   return {
     tasks: {},
 
-    executeSequence (tasks, context)
+    executeSequence (tasks, input)
     {
+      let result = input;
+
       for (const name of tasks)
       {
-        this.executeTask(name, context);
+        result = this.executeTask(name, result);
       }
+
+      return result as any;
     },
 
-    executeTask (name, context)
+    executeTask (name, input)
     {
       if (!this.tasks[name])
       {
         throw new Error(`Task "${ name }" does not exist.`);
       }
 
-      this.tasks[name](this, context);
+      return this.tasks[name](this, input);
     },
 
     registerTask (name, task)
@@ -41,4 +45,4 @@ export const usePipeline = (): Pipeline =>
 /**
  * Helper function to define a task in the pipeline.
  */
-export const defineTask = <C> (task: PipelineFunction<C>) => task;
+export const defineTask = <I, R> (task: PipelineFunction<I, R>) => task;
