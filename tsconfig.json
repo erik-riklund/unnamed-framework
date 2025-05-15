@@ -36,6 +36,10 @@
         "./core/*.ts",
         "./core/*"
       ],
+      "library/*":[
+        "./library/*.ts",
+        "./library/*"
+      ],
       "module/*": [
         "./modules/*/index.ts",
         "./modules/*"
