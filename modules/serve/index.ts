@@ -47,7 +47,8 @@ export const useServe = ({ assets, middlewares, port, routes }: ServerConfig) =>
     }
   );
 
-  console.log(chalk.green(`Server is running on port ${ process.env.PORT || port || 800 }.`));
+  console.log(chalk.gray('-'.repeat(80)));
+  console.log(chalk.cyan(`\nserver is running on port ${ process.env.PORT || port || 800 }`));
   console.log(`- serving static files at ${ chalk.yellow(assetOptions.route) } from ${ chalk.yellow(assetOptions.folder) }`);
 };
 

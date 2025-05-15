@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { file, Glob } from 'bun';
 import { basename } from 'node:path';
 import { createRoutePath } from 'core/router';
@@ -12,6 +13,8 @@ import { HttpMethod } from 'module/serve';
  */
 export const initializeEndpoints = async (sourceFolder: string, targetFile: string) =>
 {
+  console.log(`\nscanning ${ chalk.yellow(sourceFolder) } for endpoints ...`);
+
   const imports: string[] = [];
   const endpoints: Record<string, Partial<Record<HttpMethod, string>>> = {};
 
@@ -32,6 +35,8 @@ export const initializeEndpoints = async (sourceFolder: string, targetFile: stri
     }
 
     endpoints[routePath][httpMethod] = importId;
+
+    console.log(`  ${ chalk.green(httpMethod) } ${ chalk.yellow(routePath) } -> ${ chalk.cyan(normalizedPath) }`);
   }
 
   const declarations: string[] = [];

@@ -1,5 +1,5 @@
+import chalk from 'chalk';
 import { file, Glob } from 'bun';
-import { minify } from 'html-minifier';
 import { dirname } from 'node:path';
 import { compileString } from 'sass';
 import { compile } from 'module/compile';
@@ -42,6 +42,8 @@ const templates = new Map<string, boolean>();
  */
 export const processTemplates = async (sourceFolder: string, targetFolder: string) =>
 {
+  console.log(`\nscanning ${ chalk.yellow(sourceFolder) } for components ...`);
+
   const files = new Glob('**/*.fml');
   const metadata: Record<string, string[]> = {};
 
@@ -85,10 +87,13 @@ export const processTemplate = async (sourceFilePath: string, targetFolder: stri
 
   templates.set(directives.export, true);
 
-  const targetFile = file(`${ targetFolder }/${ directives.export }.js`);
+  const targetFilePath = `${ targetFolder }/${ directives.export }.js`;
+  const targetFile = file(targetFilePath);
 
   if (!await targetFile.exists() || targetFile.lastModified < sourceFile.lastModified)
   {
+    console.log(`  ${ chalk.green('template') } ${ chalk.yellow(directives.export) } -> ${ chalk.cyan(targetFilePath) }`);
+
     const content: string[] = [];
 
     if (directives.include)
@@ -102,12 +107,15 @@ export const processTemplate = async (sourceFilePath: string, targetFolder: stri
     }
 
     const compileOptions = { recursive: directives.recursive };
-    const minifiedTemplate = minify(template, { removeComments: true, collapseWhitespace: true });
-    const compiledTemplate = compile.toString(minifiedTemplate, {}, compileOptions);
+    const compiledTemplate = compile.toString(template, {}, compileOptions);
 
     content.push(`export default ${ compiledTemplate }`);
 
     await targetFile.write(content.join(''));
+  }
+  else
+  {
+    console.log(chalk.gray(`  skipping "${ directives.export }" (no changes)`));
   }
 
   processTemplateStyles(sourceFilePath, targetFolder, directives);
@@ -172,13 +180,18 @@ const processTemplateStyles = async (
 
   if (await styleFile.exists())
   {
-    const targetFile = file(`${ targetFolder }/${ directives.export }.css`);
+    const targetFilePath = `${ targetFolder }/${ directives.export }.css`;
+    const targetFile = file(targetFilePath);
 
     if (!await targetFile.exists() || targetFile.lastModified < styleFile.lastModified)
     {
-      const styleContent = await styleFile.text();
+      console.log(`  ${ chalk.green('styles') } ${ chalk.yellow(directives.export) } -> ${ chalk.cyan(targetFilePath) }`);
 
-      await targetFile.write(compileString(styleContent, { style: 'compressed' }).css);
+      await targetFile.write(compileString(await styleFile.text(), { style: 'compressed' }).css);
+    }
+    else
+    {
+      console.log(chalk.gray(`  skipping styles for "${ directives.export }" (no changes)`));
     }
   }
 };

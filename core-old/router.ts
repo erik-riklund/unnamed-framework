@@ -1,5 +1,7 @@
-import { minify } from 'html-minifier';
+import { file } from 'bun';
+import CleanCSS from 'clean-css';
 import { dirname } from 'node:path';
+import { PurgeCSS } from 'purgecss';
 
 import type { PageHandler } from './types';
 import type { RenderFunction } from 'module/compile/types';
@@ -47,11 +49,18 @@ export const servePage = async (
     context.data = { ...context.data, ...await handler() };
   }
 
-  const renderedView = view(context.data);
+  let renderedView = view(context.data);
+  let pageStyles = await loadPageStyles(pageId, dependencies);
+
+  console.log({ pageStyles });
 
   // 1. Load the stylesheets for the page and its dependencies.
   // 2. Remove unused styles and optimize the stylesheets.
   // 3. Minify and return the rendered view.
+
+  renderedView = renderedView.replace(
+    '</head>', `<style>${ pageStyles }</style></head>`
+  );
 
   return context.html(renderedView);
 };
@@ -62,5 +71,15 @@ export const servePage = async (
 const loadPageStyles = async (
   pageId: string, dependencies: string[]) =>
 {
+  const stylesheets: string[] = [];
+  const stylesheet = file(`./runtime/pages/${ pageId }.css`);
+
+  if (await stylesheet.exists())
+  {
+    stylesheets.push(await stylesheet.text());
+  }
+
   // ...
+
+  return stylesheets.join('');
 };

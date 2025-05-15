@@ -9,7 +9,7 @@ export interface PageDeclaration
   dependencies: string[];
 
   /**
-   * An optional handler function that can be used to process the request.
+   * The file path to the page handler function (optional).
    */
   handler: MaybeNull<string>;
 
