@@ -32,28 +32,6 @@
 
   "highlight.regexes":
   {
-    "(@export)\\s+[^;]+;":
-    {
-      "decorations": [
-        { "color": "#d3869b" }
-      ],
-      "filterFileRegex": ".*\\.(f|ht)ml$"
-    },
-    "(@recursive)\\s*;":
-    {
-      "decorations": [
-        { "color": "#d3869b" }
-      ],
-      "filterFileRegex": ".*\\.(f|ht)ml$"
-    },
-    "(@include)\\s+[^;]+;":
-    {
-      "decorations": [
-        { "color": "#d3869b" }
-      ],
-      "filterFileRegex": ".*\\.(f|ht)ml$"
-    },
-
     // "(\\{{2})((?::|&|>)?\\s*[\\w.]+\\s*)(\\}{2})":
     // {
     //   "decorations": [
