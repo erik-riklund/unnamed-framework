@@ -16,7 +16,19 @@
   // 	"description": "Log output to console"
   // }
 
-  "Route declaration": {
+  "component declaration": {
+    "scope": "json",
+    "prefix": "component",
+    "body": [
+      "{",
+      "  \"name\": \"${1}\",",
+      "  \"template\": \"${2}.fml\",",
+      "  \"stylesheet\": null,",
+      "  \"dependencies\": []",
+      "}"
+    ]
+  },
+  "route declaration": {
     "scope": "json",
     "prefix": "route",
     "body": [
