@@ -1,3 +1,25 @@
-import { colorize } from 'library/helpers/colorize';
+import { pipeline } from './build/pipeline';
+import { print } from 'library/helpers/print';
 
-console.log(colorize('{red:Hello} {green:World} {cyan:!}'));
+const start = Date.now();
+
+/**
+ * Display a message indicating the start of the build process.
+ */
+print(`${ '\n'.repeat(60) }{gray:${ '-'.repeat(80) }}\n`);
+print('{yellow:initializing pipeline ...}\n');
+
+/**
+ * ?
+ */
+pipeline.executeTask('buildComponents', null);
+
+/**
+ * Display a message indicating the completion of the build process.
+ */
+print(`\n{gray:${ '-'.repeat(80) }}`);
+print(`build completed in {green:${ Date.now() - start } ms}.`);
+print(`{gray:${ '-'.repeat(80) }}`);
+
+
+// --- import the build task contexts -----------------------------------------

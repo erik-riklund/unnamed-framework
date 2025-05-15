@@ -35,7 +35,8 @@
         "./core/build/tasks/*"
       ],
       "types/*": [
-        "./modules/*/types.d.ts"
+        "./modules/*/types.d.ts",
+        "./*/types.d.ts"
       ],
       "ui/*": [
         "./app/ui/*.fml",

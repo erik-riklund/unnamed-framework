@@ -39,5 +39,17 @@
       "  \"dependencies\": []",
       "}"
     ]
+  },
+  "task declaration": {
+    "scope": "javascript,typescript",
+    "prefix": "task",
+    "body": [
+      "import { defineTask } from 'module/pipeline';",
+      "",
+      "/**",
+      " * ?",
+      " */",
+      "export default defineTask((pipeline, input) => { });"
+    ]
   }
 }

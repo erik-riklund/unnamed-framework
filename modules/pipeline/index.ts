@@ -45,4 +45,4 @@ export const usePipeline = (): Pipeline =>
 /**
  * Helper function to define a task in the pipeline.
  */
-export const defineTask = <I, R> (task: PipelineFunction<I, R>) => task;
+export const defineTask = <I = unknown, R = void> (task: PipelineFunction<I, R>) => task;
