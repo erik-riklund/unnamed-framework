@@ -8,6 +8,14 @@ export const usePipeline = (): Pipeline =>
   return {
     tasks: {},
 
+    executeSequence (tasks, context)
+    {
+      for (const name of tasks)
+      {
+        this.executeTask(name, context);
+      }
+    },
+
     executeTask (name, context)
     {
       if (!this.tasks[name])

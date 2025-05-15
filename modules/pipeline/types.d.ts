@@ -9,6 +9,14 @@ export interface Pipeline
   tasks: Record<string, PipelineFunction<any>>;
 
   /**
+   * Executes the specified sequence of tasks in the pipeline.
+   * 
+   * @param tasks - An array of task names to execute in sequence.
+   * @param context - The shared context to pass to each task.
+   */
+  executeSequence (tasks: string[], context: any): void;
+
+  /**
    * Executes the specified task in the pipeline.
    * 
    * @param name - The name of the task to execute.
