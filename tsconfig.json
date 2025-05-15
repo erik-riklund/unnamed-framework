@@ -1,6 +1,48 @@
 {
   "compilerOptions":
   {
+    "paths": {
+      "api": [
+        "./app/routes/api/*.ts",
+        "./app/routes/api/*"
+      ],
+      "core": [
+        "./core/index.ts",
+      ],
+      "core/*": [
+        "./core/*.ts",
+        "./core/*"
+      ],
+      "library/*": [
+        "./library/*.ts",
+        "./library/*"
+      ],
+      "module/*": [
+        "./modules/*/index.ts",
+        "./modules/*"
+      ],
+      "page/*": [
+        "./app/routes/pages/*.ts",
+        "./app/routes/pages/*"
+      ],
+      "runtime/*": [
+        "./runtime/*.ts",
+        "./runtime/*.js",
+        "./runtime/*"
+      ],
+      "task/*":[
+        "./core/build/tasks/*.ts",
+        "./core/build/tasks/*"
+      ],
+      "types/*": [
+        "./modules/*/types.d.ts"
+      ],
+      "ui/*": [
+        "./app/ui/*.fml",
+        "./app/ui/*"
+      ]
+    },
+
     "allowJs": true,
 
     "lib": [ "ESNext", "DOM" ],
@@ -22,45 +64,7 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
-    "noPropertyAccessFromIndexSignature": false,
-
-    "paths": {
-      "api": [
-        "./app/routes/api/*.ts",
-        "./app/routes/api/*"
-      ],
-      "core": [
-        "./core/index.ts",
-      ],
-      "core/*": [
-        "./core/*.ts",
-        "./core/*"
-      ],
-      "library/*":[
-        "./library/*.ts",
-        "./library/*"
-      ],
-      "module/*": [
-        "./modules/*/index.ts",
-        "./modules/*"
-      ],
-      "page/*": [
-        "./app/routes/pages/*.ts",
-        "./app/routes/pages/*"
-      ],
-      "runtime/*": [
-        "./runtime/*.ts",
-        "./runtime/*.js",
-        "./runtime/*"
-      ],
-      "types/*": [
-        "./modules/*/types.d.ts"
-      ],
-      "ui/*": [
-        "./app/ui/*.fml",
-        "./app/ui/*"
-      ]
-    }
+    "noPropertyAccessFromIndexSignature": false
   },
 
   "exclude": [ "node_modules" ]
