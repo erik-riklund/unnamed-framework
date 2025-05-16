@@ -36,7 +36,8 @@
       "  \"handler\": null,",
       "  \"template\": \"${1}.fml\",",
       "  \"stylesheet\": null,",
-      "  \"dependencies\": []",
+      "  \"dependencies\": [],",
+      "  \"recursive\": false",
       "}"
     ]
   },
@@ -46,10 +47,18 @@
     "body": [
       "import { defineTask } from 'module/pipeline';",
       "",
+      "export type Input = any;",
+      "export type Result = any;",
+      "",
       "/**",
       " * ?",
       " */",
-      "export default defineTask((pipeline, input) => { });"
+      "export default defineTask<Input, Result>(",
+      "  (pipeline, input) =>",
+      "  {",
+      "",
+      "  }",
+      ");"
     ]
   }
 }

@@ -18,7 +18,7 @@ pipeline.executeTask('buildComponents', null);
  * Display a message indicating the completion of the build process.
  */
 print(`\n{gray:${ '-'.repeat(80) }}`);
-print(`build completed in {green:${ Date.now() - start } ms}.`);
+print(`completed in {green:${ Date.now() - start } ms}.`);
 print(`{gray:${ '-'.repeat(80) }}`);
 
 

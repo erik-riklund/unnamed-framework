@@ -1,6 +1,7 @@
 {
   "name": "test",
   "template": "test.fml",
-  "stylesheet": null,
-  "dependencies": []
+  "stylesheet": "what.scss",
+  "dependencies": [],
+  "recursive": false
 }

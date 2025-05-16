@@ -14,6 +14,11 @@ export interface ComponentDeclaration
   name: string;
 
   /**
+   * Indicates whether the component should be compiled to enable recursive calls.
+   */
+  recursive: boolean;
+
+  /**
    * An optional stylesheet file to be used for styling the component.
    */
   stylesheet: MaybeNull<string>;

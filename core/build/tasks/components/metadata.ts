@@ -11,9 +11,14 @@ export default defineTask<Input>(
   (pipeline, input) =>
   {
     const metadata = Object.fromEntries(
-      input.map((d) => [d.name, d.dependencies])
+      input.map((component) => [
+        component.name, {
+          dependencies: component.dependencies,
+          stylesheet: component.stylesheet !== null
+        }
+      ])
     );
 
-    writeFileSync('./runtime/components.json', JSON.stringify(metadata));
+    writeFileSync('./runtime/components.json', JSON.stringify(metadata, null, 2));
   }
 );

@@ -1,10 +1,15 @@
+import { defineTask } from 'module/pipeline';
+
 import type {
   Input as ScanInput,
   Result as ScanResult
 } from 'task/helpers/scan-folder';
 
-import { readFileSync } from 'node:fs';
-import { defineTask } from 'module/pipeline';
+import type {
+  Input as LoadInput,
+  Result as LoadResult
+} from './load-declaration';
+
 import type { ComponentDeclaration } from 'types/core';
 
 export type Input = { targetFolder: string; };
@@ -24,13 +29,10 @@ export default defineTask<Input, Result>(
     for (const relativeFilePath of files)
     {
       const filePath = `${ input.targetFolder }/${ relativeFilePath }`;
-      const declaration = JSON.parse(readFileSync(filePath, 'utf-8'));
-
-      declaration.template = relativeFilePath.includes('/')
-        ? `${ relativeFilePath.split('/').slice(0, -1).join('/') }/${ declaration.template }`
-        : `${ input.targetFolder }/${ declaration.template }`;
-
-      declarations.push(declaration);
+      
+      declarations.push(
+        pipeline.executeTask<LoadInput, LoadResult>('loadComponentDeclaration', { filePath })
+      );
     }
 
     return declarations;
