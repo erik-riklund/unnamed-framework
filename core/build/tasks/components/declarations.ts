@@ -1,37 +1,25 @@
 import { defineTask } from 'module/pipeline';
 
-import type {
-  Input as ScanInput,
-  Result as ScanResult
-} from 'task/helpers/scan-folder';
-
-import type {
-  Input as LoadInput,
-  Result as LoadResult
-} from './load-declaration';
-
-import type { ComponentDeclaration } from 'types/core';
-
-export type Input = { targetFolder: string; };
-export type Result = ComponentDeclaration[];
+import type { ComponentDeclaration, FilePath, TargetFolder } from 'types/core';
+import type { ScanFolderInput, ScanFolderResult } from '../helpers/scan-folder';
 
 /**
  * Reads component declarations from JSON files in the specified folder.
  */
-export default defineTask<Input, Result>(
+export default defineTask<TargetFolder, ComponentDeclaration[]>(
   (pipeline, input) =>
   {
     const declarations: ComponentDeclaration[] = [];
-    const { files } = pipeline.executeTask<ScanInput, ScanResult>(
+    const { files } = pipeline.executeTask<ScanFolderInput, ScanFolderResult>(
       'scanFolder', { glob: '**/component.json', targetFolder: input.targetFolder }
     );
 
     for (const relativeFilePath of files)
     {
       const filePath = `${ input.targetFolder }/${ relativeFilePath }`;
-      
+
       declarations.push(
-        pipeline.executeTask<LoadInput, LoadResult>('loadComponentDeclaration', { filePath })
+        pipeline.executeTask<FilePath, ComponentDeclaration>('loadComponentDeclaration', { filePath })
       );
     }
 

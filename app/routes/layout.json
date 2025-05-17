@@ -1,0 +1,6 @@
+{
+  "name": "global",
+  "template": "index.fml",
+  "stylesheet": null,
+  "dependencies": [ ]
+}

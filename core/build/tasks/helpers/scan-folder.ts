@@ -1,22 +1,14 @@
 import { Glob } from 'bun';
 import { defineTask } from 'module/pipeline';
+import type { TargetFolder } from 'types/core';
 
-/**
- * Represents the input for the `scanFolder` task.
- */
-export type Input = { glob: string, targetFolder: string; };
-
-/**
- * Represents the result of the `scanFolder` task.
- */
-export type Result = { files: string[]; targetFolder: string; };
+export type ScanFolderInput = { glob: string } & TargetFolder;
+export type ScanFolderResult = { files: string[]; } & TargetFolder;
 
 /**
  * Scans a folder for files matching a specified glob pattern.
- * 
- * @param input - The input for the task, including the glob pattern and target folder.
  */
-export default defineTask<Input, Result>(
+export default defineTask<ScanFolderInput, ScanFolderResult>(
   (pipeline, input) =>
   {
     const files: string[] = [];

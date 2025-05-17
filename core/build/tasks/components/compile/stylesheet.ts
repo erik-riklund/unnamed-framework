@@ -4,7 +4,6 @@ import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'no
 import { compileString, type StringOptions } from 'sass';
 
 import type { ComponentDeclaration } from 'types/core';
-export type CompileStylesheetInput = ComponentDeclaration;
 
 /**
  * Ensure the runtime components folder exists.
@@ -29,7 +28,7 @@ const compileOptions: StringOptions<'sync'> =
 /**
  * Compile the stylesheet for a component into a CSS file.
  */
-export default defineTask<CompileStylesheetInput>(
+export default defineTask<ComponentDeclaration>(
   (pipeline, input) =>
   {
     const { name, stylesheet } = input;
@@ -44,7 +43,7 @@ export default defineTask<CompileStylesheetInput>(
         + compileString(readFileSync(stylesheet!, 'utf-8'), compileOptions).css;
 
       writeFileSync(targetFilePath, content, { encoding: 'utf-8' });
-      print(`  stylesheet: {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
+      print(`  stylesheet for {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
     }
     else
     {

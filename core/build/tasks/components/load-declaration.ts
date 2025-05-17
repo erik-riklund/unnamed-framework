@@ -1,15 +1,12 @@
 import { defineTask } from 'module/pipeline';
 import { readFileSync } from 'node:fs';
 
-import type { ComponentDeclaration } from 'types/core';
-
-export type Input = { filePath: string; };
-export type Result = ComponentDeclaration;
+import type { ComponentDeclaration, FilePath } from 'types/core';
 
 /**
  * ?
  */
-export default defineTask<Input, Result>(
+export default defineTask<FilePath, ComponentDeclaration>(
   (pipeline, input) =>
   {
     const { filePath } = input;
