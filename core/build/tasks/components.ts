@@ -7,15 +7,15 @@ import type { ComponentDeclaration, TargetFolder } from 'types/core';
  * ?
  */
 export default defineTask(
-  (pipeline, input) =>
+  (pipeline) =>
   {
-    print('compiling components @ {yellow:./app/ui}');
+    // print('compiling components @ {yellow:./app/ui}');
 
-    const declarations = pipeline.executeTask<TargetFolder, ComponentDeclaration[]>(
-      'getComponentDeclarations', { targetFolder: './app/ui' }
-    );
+    // const declarations = pipeline.executeTask('getComponentDeclarations', { targetFolder3: './app/ui' });
 
-    pipeline.executeTask<ComponentDeclaration[]>('compileComponents', declarations);
-    pipeline.executeTask<ComponentDeclaration[]>('saveComponentMetadata', declarations);
+    // console.log(declarations);
+
+    // pipeline.executeTask<ComponentDeclaration[]>('compileComponents', declarations);
+    // pipeline.executeTask<ComponentDeclaration[]>('saveComponentMetadata', declarations);
   }
 );

@@ -28,26 +28,26 @@ const compileOptions: StringOptions<'sync'> =
 /**
  * Compile the stylesheet for a component into a CSS file.
  */
-export default defineTask<ComponentDeclaration>(
+export default defineTask(
   (pipeline, input) =>
   {
-    const { name, stylesheet } = input;
+    // const { name, stylesheet } = input;
 
-    const targetFilePath = `./runtime/components/${ name }.css`;
-    const targetFileChanged = existsSync(targetFilePath) ? statSync(targetFilePath).mtimeMs : 0;
-    const sourceFileChanged = statSync(stylesheet!).mtimeMs;
+    // const targetFilePath = `./runtime/components/${ name }.css`;
+    // const targetFileChanged = existsSync(targetFilePath) ? statSync(targetFilePath).mtimeMs : 0;
+    // const sourceFileChanged = statSync(stylesheet!).mtimeMs;
 
-    if (targetFileChanged < sourceFileChanged)
-    {
-      const content = '/* This file is auto-generated. Do not edit. */\n'
-        + compileString(readFileSync(stylesheet!, 'utf-8'), compileOptions).css;
+    // if (targetFileChanged < sourceFileChanged)
+    // {
+    //   const content = '/* This file is auto-generated. Do not edit. */\n'
+    //     + compileString(readFileSync(stylesheet!, 'utf-8'), compileOptions).css;
 
-      writeFileSync(targetFilePath, content, { encoding: 'utf-8' });
-      print(`  stylesheet for {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
-    }
-    else
-    {
-      print(`  {gray:skipping stylesheet for "${ name }" (no changes)}`);
-    }
+    //   writeFileSync(targetFilePath, content, { encoding: 'utf-8' });
+    //   print(`  stylesheet for {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
+    // }
+    // else
+    // {
+    //   print(`  {gray:skipping stylesheet for "${ name }" (no changes)}`);
+    // }
   }
 );

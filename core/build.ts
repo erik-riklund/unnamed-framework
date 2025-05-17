@@ -12,8 +12,8 @@ print('{yellow:initializing pipeline ...}\n');
 /**
  * ?
  */
-pipeline.executeTask('buildComponents', null);
-pipeline.executeTask('buildLayouts', null);
+// pipeline.executeTask('buildComponents', null);
+// pipeline.executeTask('buildLayouts', null);
 
 /**
  * Display a message indicating the completion of the build process.

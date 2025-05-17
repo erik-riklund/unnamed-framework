@@ -16,41 +16,41 @@ if (!existsSync('./runtime/components'))
 /**
  * Compile a template file into a JavaScript module.
  */
-export default defineTask<ComponentDeclaration>(
+export default defineTask(
   (pipeline, input) =>
   {
-    const { name, template, dependencies, recursive } = input;
+    // const { name, template, dependencies, recursive } = input;
 
-    const targetFilePath = `./runtime/components/${ name }.js`;
-    const targetFileChanged = existsSync(targetFilePath) ? statSync(targetFilePath).mtimeMs : 0;
-    const sourceFileChanged = statSync(template).mtimeMs;
+    // const targetFilePath = `./runtime/components/${ name }.js`;
+    // const targetFileChanged = existsSync(targetFilePath) ? statSync(targetFilePath).mtimeMs : 0;
+    // const sourceFileChanged = statSync(template).mtimeMs;
 
-    if (targetFileChanged < sourceFileChanged)
-    {
-      const content: string[] = [
-        '// This file is auto-generated. Do not edit.',
-      ];
+    // if (targetFileChanged < sourceFileChanged)
+    // {
+    //   const content: string[] = [
+    //     '// This file is auto-generated. Do not edit.',
+    //   ];
 
-      if (dependencies)
-      {
-        for (const dependency of dependencies)
-        {
-          const dependencyFilePath = `runtime/components/${ dependency }`;
-          content.push(`import __${ dependency } from '${ dependencyFilePath }';`);
-        }
-      }
+    //   if (dependencies)
+    //   {
+    //     for (const dependency of dependencies)
+    //     {
+    //       const dependencyFilePath = `runtime/components/${ dependency }`;
+    //       content.push(`import __${ dependency } from '${ dependencyFilePath }';`);
+    //     }
+    //   }
 
-      const templateContent = readFileSync(template, 'utf-8');
-      const compiledTemplate = compile.toString(templateContent, {}, { recursive });
+    //   const templateContent = readFileSync(template, 'utf-8');
+    //   const compiledTemplate = compile.toString(templateContent, {}, { recursive });
 
-      content.push(`export default ${ compiledTemplate }`);
+    //   content.push(`export default ${ compiledTemplate }`);
 
-      writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
-      print(`  template {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
-    }
-    else
-    {
-      print(`  {gray:skipping "${ name }" (no changes)}`);
-    }
+    //   writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
+    //   print(`  template {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
+    // }
+    // else
+    // {
+    //   print(`  {gray:skipping "${ name }" (no changes)}`);
+    // }
   }
 );

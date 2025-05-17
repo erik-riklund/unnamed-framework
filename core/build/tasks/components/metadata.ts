@@ -6,8 +6,8 @@ import type { ComponentDeclaration } from 'types/core';
 /**
  * Save the component metadata to a JSON file.
  */
-export default defineTask<ComponentDeclaration[]>(
-  (pipeline, input) =>
+export default defineTask(
+  (pipeline, input: ComponentDeclaration[]) =>
   {
     const metadata = Object.fromEntries(
       input.map((component) => [

@@ -1,48 +1,28 @@
-import type { Pipeline, PipelineFunction } from './types';
+import type { Pipeline, PipelineFunction, TaskMap, TaskMapFor } from './types';
 
 /**
  * Creates a pipeline object that allows registering and executing tasks.
  */
-export const usePipeline = (): Pipeline =>
+export const usePipeline = <T extends TaskMap> (taskList: T) =>
 {
-  return {
-    tasks: {},
+  const tasks = Object.fromEntries(
+    Object.entries(taskList).map(([key, task]) => [key, task])) as TaskMapFor<T>;
 
-    executeSequence (tasks, input)
+  const pipeline: Pipeline<TaskMapFor<T>> =
+  {
+    tasks,
+
+    executeTask: <K extends keyof TaskMapFor<T>> (
+      name: K, input: Parameters<TaskMapFor<T>[K]>[1]) =>
     {
-      let result = input;
-
-      for (const name of tasks)
-      {
-        result = this.executeTask(name, result);
-      }
-
-      return result as any;
+      return tasks[name](pipeline, input) as ReturnType<TaskMapFor<T>[K]>;
     },
-
-    executeTask (name, input)
-    {
-      if (!this.tasks[name])
-      {
-        throw new Error(`Task "${ name }" does not exist.`);
-      }
-
-      return this.tasks[name](this, input);
-    },
-
-    registerTask (name, task)
-    {
-      if (this.tasks[name])
-      {
-        throw new Error(`Task "${ name }" already exists.`);
-      }
-
-      this.tasks[name] = task;
-    }
   };
+
+  return pipeline;
 };
 
 /**
  * Helper function to define a task in the pipeline.
  */
-export const defineTask = <I = unknown, R = void> (task: PipelineFunction<I, R>) => task;
+export const defineTask = <I, R> (task: (pipeline: Pipeline<any>, input: I) => R) => task;

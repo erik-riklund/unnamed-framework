@@ -1,21 +1,12 @@
 /**
- * Represents a pipeline of tasks.
+ * Represents a collection of tasks organized as a pipeline.
  */
-export interface Pipeline
+export interface Pipeline<T extends TaskMap>
 {
   /**
-   * A record of tasks in the pipeline.
+   * A record of the tasks registered in the pipeline.
    */
-  tasks: Record<string, PipelineFunction<any, any>>;
-
-  /**
-   * Executes the specified sequence of tasks in the pipeline.
-   * 
-   * @param tasks - An array of task names to execute in sequence.
-   * @param input - The input to pass to the first task in the sequence.
-   * @returns The result of the last task in the sequence.
-   */
-  executeSequence<I = any, R = any> (tasks: string[], input: I): R;
+  tasks: T;
 
   /**
    * Executes the specified task in the pipeline.
@@ -24,18 +15,22 @@ export interface Pipeline
    * @param input - The input to pass to the task.
    * @returns The result of the task.
    */
-  executeTask<I = any, R = any> (name: string, input: I): R;
-
-  /**
-   * Registers a new task in the pipeline.
-   * 
-   * @param name - The name of the task to register.
-   * @param task - The function that defines the task.
-   */
-  registerTask (name: string, task: PipelineFunction<any, any>): void;
+  executeTask<K extends keyof T> (name: K, input: Parameters<T[K]>[1]): ReturnType<T[K]>;
 }
 
 /**
  * Represents a function that defines a task in the pipeline.
  */
-export type PipelineFunction<I, R> = (pipeline: Pipeline, input: I) => R;
+export type PipelineFunction<T extends TaskMap, I, R = void> = (pipeline: Pipeline<TaskMapFor<T>>, input: I) => R;
+
+/**
+ * Represents a map defining the tasks in the pipeline.
+ */
+export type TaskMap = { [K in string]: (pipeline: any, input: any) => any; };
+
+/**
+ * ?
+ */
+export type TaskMapFor<T extends TaskMap> = {
+  [K in keyof T]: T[K] extends (pipeline: Pipeline<TaskMapFor<T>>, input: infer I) => infer R ? PipelineFunction<T, I, R> : never;
+};
