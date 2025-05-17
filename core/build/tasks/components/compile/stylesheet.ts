@@ -1,8 +1,8 @@
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
-import { compileString, type StringOptions } from 'sass';
+import { pipeline } from 'core/build/pipeline';
 
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import type { ComponentDeclaration } from 'types/core';
 
 /**
@@ -14,40 +14,26 @@ if (!existsSync('./runtime/components'))
 }
 
 /**
- * Options for the Sass compiler.
- */
-const compileOptions: StringOptions<'sync'> =
-{
-  charset: false,
-  style: 'expanded',
-  sourceMap: false,
-
-  loadPaths: [] // array of paths used to resolve imports.
-};
-
-/**
  * Compile the stylesheet for a component into a CSS file.
  */
 export default defineTask(
-  (pipeline, input) =>
+  ({ name, stylesheet }: ComponentDeclaration) =>
   {
-    // const { name, stylesheet } = input;
+    const targetFilePath = `./runtime/components/${ name }.css`;
+    const targetFileChanged = existsSync(targetFilePath) ? statSync(targetFilePath).mtimeMs : 0;
+    const sourceFileChanged = statSync(stylesheet!).mtimeMs;
 
-    // const targetFilePath = `./runtime/components/${ name }.css`;
-    // const targetFileChanged = existsSync(targetFilePath) ? statSync(targetFilePath).mtimeMs : 0;
-    // const sourceFileChanged = statSync(stylesheet!).mtimeMs;
+    if (targetFileChanged < sourceFileChanged)
+    {
+      const content = '/* This file is auto-generated. Do not edit. */\n'
+        + pipeline.executeTask('compileScss', readFileSync(stylesheet!, 'utf-8'))
 
-    // if (targetFileChanged < sourceFileChanged)
-    // {
-    //   const content = '/* This file is auto-generated. Do not edit. */\n'
-    //     + compileString(readFileSync(stylesheet!, 'utf-8'), compileOptions).css;
-
-    //   writeFileSync(targetFilePath, content, { encoding: 'utf-8' });
-    //   print(`  stylesheet for {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
-    // }
-    // else
-    // {
-    //   print(`  {gray:skipping stylesheet for "${ name }" (no changes)}`);
-    // }
+      writeFileSync(targetFilePath, content, { encoding: 'utf-8' });
+      print(`  stylesheet for {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
+    }
+    else
+    {
+      print(`  {gray:skipping stylesheet for "${ name }" (no changes)}`);
+    }
   }
 );

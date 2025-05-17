@@ -1,27 +1,33 @@
 import { usePipeline } from 'module/pipeline';
 
 /**
+ * ?
+ */
+const tasks =
+{
+  buildComponents,
+  buildLayouts,
+  compileComponents,
+  compileComponentStylesheet,
+  compileComponentTemplate,
+  compileScss,
+  getComponentDeclarations,
+  loadComponentDeclaration,
+  saveComponentMetadata,
+  scanFolder
+};
+
+/**
  * Initialize the pipeline for the build process.
  */
-export const pipeline = usePipeline(
-  {
-    // buildComponents,
-    // buildLayouts,
-    // compileComponents,
-    // compileComponentStylesheet,
-    // compileComponentTemplate,
-    // getComponentDeclarations,
-    // loadComponentDeclaration,
-    // saveComponentMetadata,
-    // scanFolder
-  }
-);
+export const pipeline = usePipeline(tasks);
 
-// --- helper tasks -----------------------------------------------------------
+// // --- helper tasks -----------------------------------------------------------
 
+import compileScss from './tasks/helpers/compile-scss';
 import scanFolder from './tasks/helpers/scan-folder';
 
-// --- build tasks ------------------------------------------------------------
+// // --- build tasks ------------------------------------------------------------
 
 import buildComponents from './tasks/components';
 import buildLayouts from './tasks/layouts';

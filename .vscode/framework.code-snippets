@@ -34,7 +34,7 @@
       " * ?",
       " */",
       "export default defineTask(",
-      "  (pipeline, input) =>",
+      "  (input: ${1:any}) =>",
       "  {",
       "",
       "  }",
