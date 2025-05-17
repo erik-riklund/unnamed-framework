@@ -1,14 +1,9 @@
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
 import { pipeline } from 'core/build/pipeline';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 
 import type { ComponentDeclaration } from 'types/core';
-
-if (!existsSync('./runtime/components'))
-{
-  mkdirSync('./runtime/components', { recursive: true });
-}
 
 /**
  * Compile the stylesheet for a component into a CSS file.

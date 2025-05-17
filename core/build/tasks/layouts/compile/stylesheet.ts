@@ -1,14 +1,9 @@
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import { pipeline } from 'core/build/pipeline';
 
 import type { LayoutDeclaration } from 'types/core';
-
-if (!existsSync('./runtime/layouts'))
-{
-  mkdirSync('./runtime/layouts', { recursive: true });
-}
 
 /**
  * Compile the stylesheet for a layout into a CSS file.

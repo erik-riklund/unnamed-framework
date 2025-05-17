@@ -11,8 +11,7 @@ export default defineTask(
   ({ template, recursive }: Input) =>
   {
     const templateContent = readFileSync(template, 'utf-8');
-    const compiledTemplate = compile.toString(templateContent, {}, { recursive });
-
-    return `export default ${ compiledTemplate }`;
+    
+    return compile.toString(templateContent, {}, { recursive });
   }
 );

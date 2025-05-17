@@ -10,13 +10,18 @@ import type { TargetFolder } from 'types/core';
 export default defineTask(
   ({ targetFolder }: TargetFolder) =>
   {
-    print(`\ncompiling layouts @ {yellow:${ targetFolder }}`);
+    print(`\ncompiling {magenta:layouts} @ {yellow:${ targetFolder }}`);
 
     const declarations = pipeline.executeTask(
       'getLayoutDeclarations', { targetFolder }
     );
 
-    pipeline.executeTask('compileLayouts', declarations);
+    for (const layout of declarations)
+    {
+      pipeline.executeTask('compileLayoutTemplate', layout);
+      pipeline.executeTask('compileLayoutStylesheet', layout);
+    }
+
     pipeline.executeTask('saveLayoutMetadata', declarations);
   }
 );

@@ -3,15 +3,17 @@ import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
 import { writeFileSync } from 'node:fs';
 
-import type { LayoutDeclaration } from 'types/core';
+import type { ViewDeclaration } from 'types/core';
 
 /**
  * Compile a layout template into a JavaScript module.
  */
 export default defineTask(
-  ({ name, template, dependencies }: LayoutDeclaration) =>
+  ({ template, dependencies }: ViewDeclaration) =>
   {
-    const targetFilePath = `./runtime/layouts/${ name }.js`;
+    const name = Bun.hash(template).toString(24);
+
+    const targetFilePath = `./runtime/views/${ name }.js`;
     const sourceFileChanged = pipeline.executeTask(
       'compareLastModified', { sourceFilePath: template, targetFilePath }
     );
@@ -31,15 +33,24 @@ export default defineTask(
         }
       }
 
-      const compiledLayout = pipeline.executeTask('compileTemplate', { template })
-      content.push(`export default ${ compiledLayout };`);
-      writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
+      const layouts = pipeline.executeTask('resolveLayouts', { filePath: template });
+      
+      if (layouts.length > 0)
+      {
+        // resolve rendering of layouts + the view ...
+      }
+      else
+      {
+        const compiledTemplate = pipeline.executeTask('compileTemplate', { template })
+        content.push(`export default ${ compiledTemplate };`);
+      }
 
-      print(`  template {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
+      writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
+      print(`  template {yellow:${ template }} -> {cyan:${ targetFilePath }}`);
     }
     else
     {
-      print(`  {gray:skipping "${ name }" (no changes)}`);
+      print(`  {gray:skipping "${ template }" (no changes)}`);
     }
   }
 );

@@ -3,24 +3,18 @@ import { print } from 'library/helpers/print';
 
 const start = Date.now();
 
-/**
- * Display a message indicating the start of the build process.
- */
-print(`${ '\n'.repeat(60) }{gray:${ '-'.repeat(80) }}\n`);
-print('{yellow:initializing pipeline ...}\n');
+print(
+  `${ '\n'.repeat(60) }{gray:${ '-'.repeat(80) }}\n\n` +
+  '{yellow:initializing pipeline ...}\n'
+);
 
-/**
- * Execute the build tasks for components and layouts.
- */
+pipeline.executeTask('setupRuntimeFolder', { targetFolder: './runtime' });
 pipeline.executeTask('buildComponents', { targetFolder: './app/ui' });
 pipeline.executeTask('buildLayouts', { targetFolder: './app/routes' });
+pipeline.executeTask('buildViews', { targetFolder: './app/routes' });
 
-/**
- * Display a message indicating the completion of the build process.
- */
-print(`\n{gray:${ '-'.repeat(80) }}`);
-print(`completed in {green:${ Date.now() - start } ms}.`);
-print(`{gray:${ '-'.repeat(80) }}`);
-
-
-// --- import the build task contexts -----------------------------------------
+print(
+  `\n{gray:${ '-'.repeat(80) }}\n` +
+  `completed in {green:${ Date.now() - start } ms}.\n` +
+  `{gray:${ '-'.repeat(80) }}`
+);

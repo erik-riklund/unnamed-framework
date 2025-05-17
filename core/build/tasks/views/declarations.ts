@@ -1,18 +1,18 @@
 import { defineTask } from 'module/pipeline';
 import { pipeline } from 'core/build/pipeline';
 
-import type { LayoutDeclaration, TargetFolder } from 'types/core';
+import type { TargetFolder, ViewDeclaration } from 'types/core';
 
 /**
- * Scan a folder for layout declarations.
+ * ?
  */
 export default defineTask(
   ({ targetFolder }: TargetFolder) =>
   {
-    const declarations: LayoutDeclaration[] = [];
+    const declarations: ViewDeclaration[] = [];
 
     const files = pipeline.executeTask(
-      'scanFolder', { glob: '**/layout.json', targetFolder }
+      'scanFolder', { glob: '**/view.json', targetFolder }
     );
 
     for (const relativeFilePath of files)
@@ -20,7 +20,7 @@ export default defineTask(
       const filePath = `${ targetFolder }/${ relativeFilePath }`;
 
       declarations.push(
-        pipeline.executeTask('loadLayoutDeclaration', { filePath })
+        pipeline.executeTask('loadViewDeclaration', { filePath })
       );
     }
 

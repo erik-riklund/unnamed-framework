@@ -7,23 +7,28 @@ const tasks =
 {
   buildComponents,
   buildLayouts,
+  buildViews,
   compareLastModified,
-  compileComponents,
   compileComponentStylesheet,
   compileComponentTemplate,
-  compileLayouts,
   compileLayoutStylesheet,
   compileLayoutTemplate,
   compileStylesheet,
   compileTemplate,
+  compileViewTemplate,
   createRoutePath,
   getComponentDeclarations,
   getLayoutDeclarations,
+  getViewDeclarations,
   loadComponentDeclaration,
+  loadJsonFile,
   loadLayoutDeclaration,
+  loadViewDeclaration,
+  resolveLayouts,
   saveComponentMetadata,
   saveLayoutMetadata,
-  scanFolder
+  scanFolder,
+  setupRuntimeFolder,
 };
 
 /**
@@ -38,21 +43,26 @@ import compareLastModified from './tasks/shared/last-modified';
 import compileStylesheet from './tasks/shared/compile-stylesheet';
 import compileTemplate from './tasks/shared/compile-template';
 import createRoutePath from './tasks/shared/create-route-path';
+import loadJsonFile from './tasks/shared/load-json';
+import resolveLayouts from './tasks/views/resolve-layouts';
 import scanFolder from './tasks/shared/scan-folder';
+import setupRuntimeFolder from './tasks/setup-runtime';
 
 // // --- build tasks ------------------------------------------------------------
 
 import buildComponents from './tasks/components';
 import buildLayouts from './tasks/layouts';
-import compileComponents from './tasks/components/compile-all';
+import buildViews from './tasks/views';
 import compileComponentStylesheet from './tasks/components/compile/stylesheet';
 import compileComponentTemplate from './tasks/components/compile/template';
-import compileLayouts from './tasks/layouts/compile-all';
 import compileLayoutStylesheet from './tasks/layouts/compile/stylesheet';
 import compileLayoutTemplate from './tasks/layouts/compile/template';
+import compileViewTemplate from './tasks/views/compile/template';
 import getComponentDeclarations from './tasks/components/declarations';
 import getLayoutDeclarations from './tasks/layouts/declarations';
+import getViewDeclarations from './tasks/views/declarations';
 import loadComponentDeclaration from './tasks/components/load-declaration';
 import loadLayoutDeclaration from './tasks/layouts/load-declaration';
+import loadViewDeclaration from './tasks/views/load-declaration';
 import saveComponentMetadata from './tasks/components/metadata';
 import saveLayoutMetadata from './tasks/layouts/metadata';

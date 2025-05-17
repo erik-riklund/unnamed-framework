@@ -1,5 +1,5 @@
+import { pipeline } from 'core/build/pipeline';
 import { defineTask } from 'module/pipeline';
-import { readFileSync } from 'node:fs';
 
 import type { LayoutDeclaration, FilePath } from 'types/core';
 
@@ -9,10 +9,9 @@ import type { LayoutDeclaration, FilePath } from 'types/core';
 export default defineTask(
   ({ filePath }: FilePath) =>
   {
-    const fileContent = readFileSync(filePath, 'utf-8');
-    const declaration: LayoutDeclaration = JSON.parse(fileContent);
-
+    const declaration: LayoutDeclaration = pipeline.executeTask('loadJsonFile', { filePath });
     const folderPath = filePath.substring(0, filePath.lastIndexOf('/'));
+
     declaration.template = `${ folderPath }/${ declaration.template }`;
 
     if (declaration.stylesheet !== null)

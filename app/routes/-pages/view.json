@@ -1,6 +1,6 @@
 {
   "handler": null,
   "template": "landing.fml",
-  "stylesheet": null,
+  "stylesheet": "test.scss",
   "dependencies": []
 }

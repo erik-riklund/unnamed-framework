@@ -1,17 +1,9 @@
 import { pipeline } from 'core/build/pipeline';
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
+import { writeFileSync } from 'node:fs';
 
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import type { ComponentDeclaration } from 'types/core';
-
-/**
- * Ensure the runtime components folder exists.
- */
-if (!existsSync('./runtime/components'))
-{
-  mkdirSync('./runtime/components', { recursive: true });
-}
 
 /**
  * Compile a template file into a JavaScript module.
@@ -39,7 +31,8 @@ export default defineTask(
         }
       }
 
-      content.push(pipeline.executeTask('compileTemplate', { template, recursive }));
+      const compiledTemplate = pipeline.executeTask('compileTemplate', { template, recursive })
+      content.push(`export default ${ compiledTemplate };`);
       writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
       
       print(`  template {yellow:${ name }} -> {cyan:${ targetFilePath }}`);

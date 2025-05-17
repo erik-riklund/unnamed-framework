@@ -2,9 +2,6 @@
 // --- INTERFACES -------------------------------------------------------------
 //
 
-/**
- * Represents a component declaration.
- */
 export interface ComponentDeclaration extends TemplateDeclaration
 {
   /**
@@ -18,9 +15,7 @@ export interface ComponentDeclaration extends TemplateDeclaration
   recursive: boolean;
 }
 
-/**
- * Represents a component declaration.
- */
+
 export interface LayoutDeclaration extends TemplateDeclaration
 {
   /**
@@ -34,9 +29,26 @@ export interface LayoutDeclaration extends TemplateDeclaration
   basePath: string;
 }
 
-/**
- * Represents a template declaration.
- */
+
+export interface LayoutMetadata
+{
+  /**
+   * The path at which the layout should be applied to views.
+   */
+  basePath: string;
+
+  /**
+   * An array of component names that this component depends on.
+   */
+  dependencies: string[];
+
+  /**
+   * Specifies whether the layout has a stylesheet.
+   */
+  stylesheet: boolean;
+}
+
+
 interface TemplateDeclaration
 {
   /**
@@ -55,9 +67,7 @@ interface TemplateDeclaration
   template: string;
 }
 
-/**
- * Represents a route declaration for a page (view).
- */
+
 export interface ViewDeclaration extends TemplateDeclaration
 {
   /**
