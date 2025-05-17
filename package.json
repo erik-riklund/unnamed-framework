@@ -23,7 +23,6 @@
     "build-dev": "bun run --watch --no-clear-screen './core/build.ts' --dev",
     "serve": "bun run './core/index.ts'",
     "serve-dev": "wait-on './runtime/pages.ts' && bun run --watch --no-clear-screen './core/index.ts'",
-    "start": "npm-run-all build serve",
-    "start-dev": "npm-run-all --parallel build-dev serve-dev"
+    "start": "npm-run-all build serve"
   }
 }

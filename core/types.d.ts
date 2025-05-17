@@ -27,6 +27,11 @@ export interface LayoutDeclaration extends TemplateDeclaration
    * The name of the component, which is used as a key in the component registry.
    */
   name: string;
+
+  /**
+   * The path at which the layout should be applied to views.
+   */
+  basePath: string;
 }
 
 /**

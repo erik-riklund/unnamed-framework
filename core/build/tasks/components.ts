@@ -10,7 +10,7 @@ import type { TargetFolder } from 'types/core';
 export default defineTask(
   ({ targetFolder }: TargetFolder) =>
   {
-    print('compiling components @ {yellow:./app/ui}');
+    print(`compiling components @ {yellow:${ targetFolder }}`);
 
     const declarations = pipeline.executeTask(
       'getComponentDeclarations', { targetFolder }

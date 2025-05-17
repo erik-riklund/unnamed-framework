@@ -17,6 +17,6 @@ export default defineTask(
       files.push(file.replaceAll('\\', '/'));
     }
 
-    return { files, targetFolder };
+    return files;
   }
 );

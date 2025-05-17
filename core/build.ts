@@ -13,7 +13,7 @@ print('{yellow:initializing pipeline ...}\n');
  * ?
  */
 pipeline.executeTask('buildComponents', { targetFolder: './app/ui' });
-pipeline.executeTask('buildLayouts', null);
+pipeline.executeTask('buildLayouts', { targetFolder: './app/routes' });
 
 /**
  * Display a message indicating the completion of the build process.

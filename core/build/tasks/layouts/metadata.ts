@@ -1,17 +1,19 @@
 import { writeFileSync } from 'node:fs';
 import { defineTask } from 'module/pipeline';
 
-import type { ComponentDeclaration } from 'types/core';
+import type { LayoutDeclaration } from 'types/core';
 
 /**
- * Save the component metadata to a JSON file.
+ * Save the layout metadata to a JSON file.
  */
 export default defineTask(
-  (declarations: ComponentDeclaration[]) =>
+  (declarations: LayoutDeclaration[]) =>
   {
     const metadata = Object.fromEntries(
       declarations.map((component) => [
-        component.name, {
+        component.name,
+        {
+          basePath: component.basePath,
           dependencies: component.dependencies,
           stylesheet: component.stylesheet !== null
         }
@@ -19,6 +21,6 @@ export default defineTask(
     );
 
     const jsonOutput = JSON.stringify(metadata, null, 2);
-    writeFileSync('./runtime/components.json', jsonOutput);
+    writeFileSync('./runtime/layouts.json', jsonOutput);
   }
 );

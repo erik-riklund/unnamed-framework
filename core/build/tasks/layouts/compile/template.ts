@@ -1,25 +1,22 @@
 import { pipeline } from 'core/build/pipeline';
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
-
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import type { ComponentDeclaration } from 'types/core';
 
-/**
- * Ensure the runtime components folder exists.
- */
-if (!existsSync('./runtime/components'))
+import type { LayoutDeclaration } from 'types/core';
+
+if (!existsSync('./runtime/layouts'))
 {
-  mkdirSync('./runtime/components', { recursive: true });
+  mkdirSync('./runtime/layouts', { recursive: true });
 }
 
 /**
- * Compile a template file into a JavaScript module.
+ * Compile a layout template into a JavaScript module.
  */
 export default defineTask(
-  ({ name, template, dependencies, recursive }: ComponentDeclaration) =>
+  ({ name, template, dependencies }: LayoutDeclaration) =>
   {
-    const targetFilePath = `./runtime/components/${ name }.js`;
+    const targetFilePath = `./runtime/layouts/${ name }.js`;
     const sourceFileChanged = pipeline.executeTask(
       'compareLastModified', { sourceFilePath: template, targetFilePath }
     );
@@ -39,9 +36,9 @@ export default defineTask(
         }
       }
 
-      content.push(pipeline.executeTask('compileTemplate', { template, recursive }));
+      content.push(pipeline.executeTask('compileTemplate', { template }));
       writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
-      
+
       print(`  template {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
     }
     else

@@ -1,5 +1,6 @@
 import { defineTask } from 'module/pipeline';
 import { pipeline } from 'core/build/pipeline';
+
 import type { ComponentDeclaration } from 'types/core';
 
 /**
