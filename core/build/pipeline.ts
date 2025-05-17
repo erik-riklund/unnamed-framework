@@ -14,7 +14,7 @@ const tasks =
   compileLayouts,
   compileLayoutStylesheet,
   compileLayoutTemplate,
-  compileScss,
+  compileStylesheet,
   compileTemplate,
   createRoutePath,
   getComponentDeclarations,
@@ -35,7 +35,7 @@ export const pipeline = usePipeline(tasks);
 // // --- shared tasks -----------------------------------------------------------
 
 import compareLastModified from './tasks/shared/last-modified';
-import compileScss from './tasks/shared/compile-scss';
+import compileStylesheet from './tasks/shared/compile-stylesheet';
 import compileTemplate from './tasks/shared/compile-template';
 import createRoutePath from './tasks/shared/create-route-path';
 import scanFolder from './tasks/shared/scan-folder';

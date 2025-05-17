@@ -10,7 +10,7 @@ print(`${ '\n'.repeat(60) }{gray:${ '-'.repeat(80) }}\n`);
 print('{yellow:initializing pipeline ...}\n');
 
 /**
- * ?
+ * Execute the build tasks for components and layouts.
  */
 pipeline.executeTask('buildComponents', { targetFolder: './app/ui' });
 pipeline.executeTask('buildLayouts', { targetFolder: './app/routes' });
