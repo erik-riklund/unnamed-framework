@@ -35,7 +35,7 @@ export default defineTask(
       content.push(`export default ${ compiledTemplate };`);
       writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
       
-      print(`  template {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
+      print(`  template {yellow:${ name }} {gray:${template}} -> {cyan:${ targetFilePath }}`);
     }
     else
     {

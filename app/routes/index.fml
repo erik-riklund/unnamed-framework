@@ -9,6 +9,6 @@
   </head>
 
   <body>
-    {{! content }}
+    {{! _content }}
   </body>
 </html>

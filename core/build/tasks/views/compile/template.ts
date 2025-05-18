@@ -29,24 +29,41 @@ export default defineTask(
         for (const dependency of dependencies)
         {
           const dependencyFilePath = `runtime/components/${ dependency }`;
+
           content.push(`import __${ dependency } from '${ dependencyFilePath }';`);
         }
       }
 
+      const compiledTemplate = pipeline.executeTask('compileTemplate', { template });
       const layouts = pipeline.executeTask('resolveLayouts', { filePath: template });
-      
+
       if (layouts.length > 0)
       {
-        // resolve rendering of layouts + the view ...
+        const layoutList: string[] = [];
+
+        for (const { name } of layouts)
+        {
+          layoutList.push(`layout_${ name }`);
+
+          content.push(`import layout_${ name } from 'runtime/layouts/${ name }';`);
+        }
+
+        content.push(`const layouts = [ ${ layoutList.join(', ') } ];`);
+        content.push(`const template = ${ compiledTemplate };`);
+
+        content.push(`export default (self) => {`);
+        content.push(`let result = template(self);`);
+        content.push(`for (const layout of layouts.reverse()) {`);
+        content.push(`  result = layout({...self, _content: result});`);
+        content.push(`}\nreturn result;\n};`);
       }
       else
       {
-        const compiledTemplate = pipeline.executeTask('compileTemplate', { template })
         content.push(`export default ${ compiledTemplate };`);
       }
 
       writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
-      print(`  template {yellow:${ template }} -> {cyan:${ targetFilePath }}`);
+      print(`  template {gray:${ template }} -> {cyan:${ targetFilePath }}`);
     }
     else
     {
