@@ -12,6 +12,8 @@ pipeline.executeTask('setupRuntimeFolder', { targetFolder: './runtime' });
 pipeline.executeTask('buildComponents', { targetFolder: './app/ui' });
 pipeline.executeTask('buildLayouts', { targetFolder: './app/routes' });
 pipeline.executeTask('buildViews', { targetFolder: './app/routes' });
+pipeline.executeTask('buildEndpoints', { targetFolder: './app/routes' });
+pipeline.executeTask('buildMiddlewares', { targetFolder: './app/routes' });
 
 print(
   `\n{gray:${ '-'.repeat(80) }}\n` +
@@ -22,15 +24,14 @@ print(
 
 if (process.argv.includes('--dev'))
 {
-  print(`\n{green:watching for changes} ...\n`);
+  print(`\n{green:watching for changes} ...`);
   const watch = (await import('glob-watcher')).default;
 
   /**
    * Watch for changes to components and rebuild them.
    */
-  watch('./app/ui/**/*.{json,fml,scss}', { ignoreInitial: true }).on('all',
-    () => pipeline.executeTask('buildComponents', { targetFolder: './app/ui' })
-  );
+  watch('./app/ui/**/*.{json,fml,scss}', { ignoreInitial: true })
+    .on('all', () => pipeline.executeTask('buildComponents', { targetFolder: './app/ui' }));
 
   /**
    * Watch for changes to layouts/views and rebuild them.
@@ -39,7 +40,15 @@ if (process.argv.includes('--dev'))
     () =>
     {
       pipeline.executeTask('buildLayouts', { targetFolder: './app/routes' });
+      pipeline.executeTask('buildEndpoints', { targetFolder: './app/routes' });
+      pipeline.executeTask('buildMiddlewares', { targetFolder: './app/routes' });
       pipeline.executeTask('buildViews', { targetFolder: './app/routes' });
     }
   );
+
+  /**
+   * Watch for changes to endpoints and rebuild them.
+   */
+  watch('./app/routes/**/{GET,POST,PUT,PATCH,DELETE}.ts', { ignoreInitial: true })
+    .on('all', () => pipeline.executeTask('buildEndpoints', { targetFolder: './app/routes' }));
 }

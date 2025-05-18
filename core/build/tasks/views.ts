@@ -33,7 +33,7 @@ export default defineTask(
       const routePath = pipeline.executeTask('createRoutePath', view.template);
       const routeId = Bun.hash(routePath).toString(24);
 
-      print(`  {green:${ view.template }} -> GET {cyan:${ routePath }}`);
+      print(`  GET {cyan:${ routePath }} -> {green:${ view.template }}`);
 
       if (view.handler !== null)
       {

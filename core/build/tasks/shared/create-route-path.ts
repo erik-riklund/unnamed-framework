@@ -28,6 +28,6 @@ export default defineTask(
       }
     }
 
-    return routeSegments.length > 0 ? routeSegments.join('/') : '/';
+    return routeSegments.length > 0 ? ('/' + routeSegments.join('/')) : '/';
   }
 );

@@ -6,7 +6,9 @@ import { usePipeline } from 'module/pipeline';
 const tasks =
 {
   buildComponents,
+  buildEndpoints,
   buildLayouts,
+  buildMiddlewares,
   buildViews,
   compareLastModified,
   compileComponentStylesheet,
@@ -55,7 +57,9 @@ import writeFile from './tasks/shared/write-file';
 // // --- build tasks ------------------------------------------------------------
 
 import buildComponents from './tasks/components';
+import buildEndpoints from './tasks/endpoints';
 import buildLayouts from './tasks/layouts';
+import buildMiddlewares from './tasks/middlewares';
 import buildViews from './tasks/views';
 import compileComponentStylesheet from './tasks/components/compile/stylesheet';
 import compileComponentTemplate from './tasks/components/compile/template';
