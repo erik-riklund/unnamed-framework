@@ -12,12 +12,9 @@ print(`${ '\n'.repeat(60) }{gray:${ '-'.repeat(80) }}\n`);
  */
 useServe(
   {
-    middlewares: [
-      ...middlewares, ...middlewares2
-    ],
-    routes: [
-      ...endpoints, ...routes
-    ],
+    routes: [...endpoints, ...routes],
+    middlewares: [...middlewares, ...middlewares2],
+    
     assets: { folder: './app/assets' }
   }
 );
