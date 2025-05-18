@@ -76,7 +76,7 @@ const createRoutePipelines = (routes: RouteDeclaration[],
     for (const { handler, method, path } of middlewares)
     {
       if ((path === '*' || path === routePath || routePath.startsWith(`${ path }/`))
-        && (method as string === 'ANY' || method === routeMethod))
+        && (method as string === 'ALL' || method === routeMethod))
       {
         stack.push(handler); // the middleware is added to the stack.
       }
@@ -184,3 +184,11 @@ const staticFileResponse = async (filePath: string) =>
  * @returns The handler function itself.
  */
 export const defineRouteHandler = (handler: RouteHandler) => handler;
+
+/**
+ * Helper function to define a middleware handler. Simply infers the expected type of the handler.
+ * 
+ * @param handler - The middleware handler function.
+ * @returns The handler function itself.
+ */
+export const defineMiddleware = (handler: MiddlewareHandler) => handler;

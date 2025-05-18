@@ -6,6 +6,10 @@
         "./app/routes/api/*.ts",
         "./app/routes/api/*"
       ],
+      "app/*": [
+        "./app/*.ts",
+        "./app/*"
+      ],
       "core": [
         "./core/index.ts",
       ],

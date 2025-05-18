@@ -30,6 +30,25 @@
     ]
   },
 
+  "middleware declaration":
+  {
+    "scope": "typescript",
+    "prefix": "middleware",
+    "body": [
+      "import { defineMiddleware } from 'module/serve';",
+      "",
+      "/**",
+      " * ?",
+      " */",
+      "export default defineMiddleware(",
+      "  async (context) =>",
+      "  {",
+      "    // ...",
+      "  }",
+      ");"
+    ]
+  },
+
   "task declaration":
   {
     "scope": "typescript",

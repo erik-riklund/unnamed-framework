@@ -51,4 +51,10 @@ if (process.argv.includes('--dev'))
    */
   watch('./app/routes/**/{GET,POST,PUT,PATCH,DELETE}.ts', { ignoreInitial: true })
     .on('all', () => pipeline.executeTask('buildEndpoints', { targetFolder: './app/routes' }));
+
+  /**
+   * Watch for changes to middlewares and rebuild them.
+   */
+  watch('./app/routes/**/+{ALL,GET,POST,PUT,PATCH,DELETE}.ts', { ignoreInitial: true })
+    .on('all', () => pipeline.executeTask('buildMiddlewares', { targetFolder: './app/routes' }));
 }
