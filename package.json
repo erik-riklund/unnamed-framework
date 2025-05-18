@@ -3,7 +3,6 @@
   "dependencies": {
     "chalk": "^5.4.1",
     "clean-css": "^5.3.3",
-    "glob-watcher": "^6.0.0",
     "html-minifier": "^4.0.0",
     "purgecss": "^7.0.2",
     "sass": "^1.88.0"
@@ -12,6 +11,7 @@
     "@types/bun": "latest",
     "@types/glob-watcher": "^5.0.5",
     "@types/html-minifier": "^4.0.5",
+    "glob-watcher": "^6.0.0",
     "npm-run-all": "^4.1.5",
     "wait-on": "^8.0.3"
   },
@@ -19,7 +19,7 @@
     "bun": "latest"
   },
   "scripts": {
-    "build": "bun run './core/build.ts'",
+    "build": "bun run './core/build.ts' --clean",
     "build-dev": "bun run --watch --no-clear-screen './core/build.ts' --dev",
     "serve": "bun run './core/index.ts'",
     "serve-dev": "wait-on './runtime/routes.ts' && bun run --watch './core/index.ts'",

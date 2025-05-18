@@ -1,6 +1,5 @@
-import { existsSync, mkdirSync } from 'node:fs';
 import { defineTask } from 'module/pipeline';
-
+import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import type { TargetFolder } from 'types/core';
 
 /**
@@ -9,6 +8,11 @@ import type { TargetFolder } from 'types/core';
 export default defineTask(
   ({ targetFolder }: TargetFolder) =>
   {
+    if (process.argv.includes('--clean'))
+    {
+      rmSync(targetFolder, { recursive: true, force: true });
+    }
+
     const subFolders = ['components', 'layouts', 'views'];
 
     subFolders.forEach(
