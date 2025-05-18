@@ -15,6 +15,7 @@ const tasks =
   compileLayoutTemplate,
   compileStylesheet,
   compileTemplate,
+  compileViewStylesheet,
   compileViewTemplate,
   createRoutePath,
   getComponentDeclarations,
@@ -27,8 +28,10 @@ const tasks =
   resolveLayouts,
   saveComponentMetadata,
   saveLayoutMetadata,
+  saveViewMetadata,
   scanFolder,
   setupRuntimeFolder,
+  writeFile
 };
 
 /**
@@ -47,6 +50,7 @@ import loadJsonFile from './tasks/shared/load-json';
 import resolveLayouts from './tasks/views/resolve-layouts';
 import scanFolder from './tasks/shared/scan-folder';
 import setupRuntimeFolder from './tasks/setup-runtime';
+import writeFile from './tasks/shared/write-file';
 
 // // --- build tasks ------------------------------------------------------------
 
@@ -57,6 +61,7 @@ import compileComponentStylesheet from './tasks/components/compile/stylesheet';
 import compileComponentTemplate from './tasks/components/compile/template';
 import compileLayoutStylesheet from './tasks/layouts/compile/stylesheet';
 import compileLayoutTemplate from './tasks/layouts/compile/template';
+import compileViewStylesheet from './tasks/views/compile/stylesheet';
 import compileViewTemplate from './tasks/views/compile/template';
 import getComponentDeclarations from './tasks/components/declarations';
 import getLayoutDeclarations from './tasks/layouts/declarations';
@@ -66,3 +71,4 @@ import loadLayoutDeclaration from './tasks/layouts/load-declaration';
 import loadViewDeclaration from './tasks/views/load-declaration';
 import saveComponentMetadata from './tasks/components/metadata';
 import saveLayoutMetadata from './tasks/layouts/metadata';
+import saveViewMetadata from './tasks/views/metadata';

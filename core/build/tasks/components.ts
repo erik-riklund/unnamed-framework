@@ -10,7 +10,7 @@ import type { TargetFolder } from 'types/core';
 export default defineTask(
   ({ targetFolder }: TargetFolder) =>
   {
-    print(`compiling {magenta:components} @ {yellow:${ targetFolder }}`);
+    print(`compiling {magenta:components} @ {yellow:${ targetFolder }}\n`);
 
     const declarations = pipeline.executeTask(
       'getComponentDeclarations', { targetFolder }

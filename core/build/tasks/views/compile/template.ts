@@ -1,7 +1,6 @@
 import { pipeline } from 'core/build/pipeline';
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
-import { writeFileSync } from 'node:fs';
 
 import type { ViewDeclaration } from 'types/core';
 
@@ -11,7 +10,8 @@ import type { ViewDeclaration } from 'types/core';
 export default defineTask(
   ({ template, dependencies }: ViewDeclaration) =>
   {
-    const name = Bun.hash(template).toString(24);
+    const routePath = pipeline.executeTask('createRoutePath', template);
+    const name = Bun.hash(routePath).toString(24);
 
     const targetFilePath = `./runtime/views/${ name }.js`;
     const sourceFileChanged = pipeline.executeTask(
@@ -51,23 +51,25 @@ export default defineTask(
         content.push(`const layouts = [ ${ layoutList.join(', ') } ];`);
         content.push(`const template = ${ compiledTemplate };`);
 
-        content.push(`export default (self) => {`);
-        content.push(`let result = template(self);`);
-        content.push(`for (const layout of layouts.reverse()) {`);
-        content.push(`  result = layout({...self, _content: result});`);
-        content.push(`}\nreturn result;\n};`);
+        content.push(
+          `export default (self)=>{` +
+          `let result=template(self);` +
+          `for(const layout of layouts.reverse()){` +
+          `result=layout({...self,_content:result});` +
+          `}return result;};`
+        );
       }
       else
       {
         content.push(`export default ${ compiledTemplate };`);
       }
 
-      writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
-      print(`  template {gray:${ template }} -> {cyan:${ targetFilePath }}`);
+      pipeline.executeTask('writeFile', { fileName: `views/${ name }.js`, content });
+      print(`  {green:${ template }} -> {cyan:${ targetFilePath }}`);
     }
     else
     {
-      print(`  {gray:skipping "${ template }" (no changes)}`);
+      print(`  {gray:${ template } (no changes)}`);
     }
   }
 );

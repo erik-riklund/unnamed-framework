@@ -14,6 +14,11 @@ export default defineTask(
     
     declaration.template = `${ folderPath }/${ declaration.template }`;
 
+    if (declaration.handler !== null)
+    {
+      declaration.handler = `${ folderPath }/${ declaration.handler }`;
+    }
+
     if (declaration.stylesheet !== null)
     {
       declaration.stylesheet = `${ folderPath }/${ declaration.stylesheet }`;

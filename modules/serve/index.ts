@@ -3,11 +3,12 @@ import type {
   MiddlewareHandler,
   RequestContext,
   RouteDeclaration,
+  RouteHandler,
   RoutePipelines,
   ServerConfig
 } from './types';
 
-import chalk from 'chalk';
+import { print } from 'library/helpers/print';
 import { file, serve, type BunRequest } from 'bun';
 import { HttpMethod } from './types.d';
 export { middleware } from './middleware';
@@ -47,9 +48,8 @@ export const useServe = ({ assets, middlewares, port, routes }: ServerConfig) =>
     }
   );
 
-  console.log(chalk.gray('-'.repeat(80)));
-  console.log(chalk.cyan(`\nserver is running on port ${ process.env.PORT || port || 800 }`));
-  console.log(`- serving static files at ${ chalk.yellow(assetOptions.route) } from ${ chalk.yellow(assetOptions.folder) }`);
+  print(`\nserver is listening on port {yellow:${ process.env.PORT || port || 800 }}.`)
+  print(`- serving static files at {cyan:${ assetOptions.route }} from {yellow:${ assetOptions.folder }}`);
 };
 
 /**
@@ -176,3 +176,11 @@ const staticFileResponse = async (filePath: string) =>
     return new Response(null, { status: 500 });
   }
 };
+
+/**
+ * Helper function to define a route handler. Simply infers the expected type of the handler.
+ * 
+ * @param handler - The route handler function.
+ * @returns The handler function itself.
+ */
+export const defineRouteHandler = (handler: RouteHandler) => handler;

@@ -1,7 +1,6 @@
 import { pipeline } from 'core/build/pipeline';
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
-import { writeFileSync } from 'node:fs';
 
 import type { ComponentDeclaration } from 'types/core';
 
@@ -33,13 +32,14 @@ export default defineTask(
 
       const compiledTemplate = pipeline.executeTask('compileTemplate', { template, recursive })
       content.push(`export default ${ compiledTemplate };`);
-      writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
       
-      print(`  template {yellow:${ name }} {gray:${template}} -> {cyan:${ targetFilePath }}`);
+      pipeline.executeTask('writeFile', { fileName: `components/${ name }.js`, content });
+      
+      print(`  {yellow:${ name }} {green:${template}} -> {cyan:${ targetFilePath }}`);
     }
     else
     {
-      print(`  {gray:skipping "${ name }" (no changes)}`);
+      print(`  {gray:${template} (no changes)}`);
     }
   }
 );

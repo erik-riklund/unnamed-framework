@@ -12,7 +12,7 @@ export default defineTask(
     const targetFileChanged = existsSync(targetFilePath) ? statSync(targetFilePath).mtimeMs : 0;
     const sourceFileChanged = existsSync(sourceFilePath) ? statSync(sourceFilePath).mtimeMs : 0;
 
-    return true;
-    // return targetFileChanged < sourceFileChanged;
+    // return true;
+    return targetFileChanged < sourceFileChanged;
   }
 );

@@ -1,18 +1,15 @@
 import { useServe } from 'module/serve';
-// import { endpoints } from 'runtime/endpoints';
+// import { routes as endpoints } from 'runtime/endpoints';
 // import { middlewares } from 'runtime/middlewares';
-// import { pages } from 'runtime/pages';
+import { routes } from 'runtime/routes';
 
 /**
  * ?
  */
 useServe(
   {
-    // middlewares,
-    routes: [ /*...endpoints, ...pages*/ ],
-
-    assets: {
-      folder: './app/assets'
-    }
+    /*middlewares,*/
+    routes: [/*...endpoints,*/ ...routes],
+    assets: { folder: './app/assets' }
   }
 );

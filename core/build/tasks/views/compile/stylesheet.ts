@@ -2,17 +2,20 @@ import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
 import { pipeline } from 'core/build/pipeline';
 
-import type { ComponentDeclaration } from 'types/core';
+import type { ViewDeclaration } from 'types/core';
 
 /**
  * Compile the stylesheet for a component into a CSS file.
  */
 export default defineTask(
-  ({ name, stylesheet }: ComponentDeclaration) =>
+  ({ template, stylesheet }: ViewDeclaration) =>
   {
     if (!stylesheet) return; // no stylesheet to compile.
 
-    const targetFilePath = `./runtime/components/${ name }.css`;
+    const routePath = pipeline.executeTask('createRoutePath', template);
+    const routeId = Bun.hash(routePath).toString(24);
+
+    const targetFilePath = `./runtime/views/${ routeId }.css`;
     const sourceFileChanged = pipeline.executeTask(
       'compareLastModified', { sourceFilePath: stylesheet!, targetFilePath }
     );
@@ -22,8 +25,8 @@ export default defineTask(
       const content = '/* This file is auto-generated. Do not edit. */\n'
         + pipeline.executeTask('compileStylesheet', stylesheet!);
 
-      pipeline.executeTask('writeFile', { fileName: `components/${ name }.css`, content });
-      print(`  {yellow:${ name }} {green:${ stylesheet }} -> {cyan:${ targetFilePath }}`);
+      pipeline.executeTask('writeFile', { fileName: `views/${ routeId }.css`, content });
+      print(`  {green:${ stylesheet }} -> {cyan:${ targetFilePath }}`);
     }
     else
     {

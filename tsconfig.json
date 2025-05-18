@@ -21,9 +21,9 @@
         "./modules/*/index.ts",
         "./modules/*"
       ],
-      "page/*": [
-        "./app/routes/pages/*.ts",
-        "./app/routes/pages/*"
+      "route/*": [
+        "./app/routes/*.ts",
+        "./app/routes/*"
       ],
       "runtime/*": [
         "./runtime/*.ts",

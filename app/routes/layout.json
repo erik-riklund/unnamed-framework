@@ -1,6 +1,6 @@
 {
   "name": "global",
   "template": "index.fml",
-  "stylesheet": null,
-  "dependencies": [ ]
+  "stylesheet": "bg.scss",
+  "dependencies": [ "test" ]
 }

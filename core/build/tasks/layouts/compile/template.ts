@@ -1,7 +1,6 @@
 import { pipeline } from 'core/build/pipeline';
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
-import { writeFileSync } from 'node:fs';
 
 import type { LayoutDeclaration } from 'types/core';
 
@@ -33,13 +32,14 @@ export default defineTask(
 
       const compiledLayout = pipeline.executeTask('compileTemplate', { template });
       content.push(`export default ${ compiledLayout };`);
-      writeFileSync(targetFilePath, content.join('\n'), 'utf-8');
+      
+      pipeline.executeTask('writeFile', { fileName: `layouts/${ name }.js`, content });
 
-      print(`  template {yellow:${ name }} {gray:${ template }} -> {cyan:${ targetFilePath }}`);
+      print(`  {yellow:${ name }} {green:${ template }} -> {cyan:${ targetFilePath }}`);
     }
     else
     {
-      print(`  {gray:skipping "${ name }" (no changes)}`);
+      print(`  {gray:${ template } (no changes)}`);
     }
   }
 );

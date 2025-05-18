@@ -1,6 +1,5 @@
 import { print } from 'library/helpers/print';
 import { defineTask } from 'module/pipeline';
-import { writeFileSync } from 'node:fs';
 import { pipeline } from 'core/build/pipeline';
 
 import type { LayoutDeclaration } from 'types/core';
@@ -23,12 +22,12 @@ export default defineTask(
       const content = '/* This file is auto-generated. Do not edit. */\n'
         + pipeline.executeTask('compileStylesheet', stylesheet!);
 
-      writeFileSync(targetFilePath, content, { encoding: 'utf-8' });
-      print(`  stylesheet for {yellow:${ name }} -> {cyan:${ targetFilePath }}`);
+      pipeline.executeTask('writeFile', { fileName: `layouts/${ name }.css`, content });
+      print(`  {yellow:${ name }} {green:${ stylesheet }} -> {cyan:${ targetFilePath }}`);
     }
     else
     {
-      print(`  {gray:skipping stylesheet for "${ name }" (no changes)}`);
+      print(`  {gray:${ stylesheet } (no changes)}`);
     }
   }
 );

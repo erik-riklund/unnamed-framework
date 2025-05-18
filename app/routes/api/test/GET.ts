@@ -1,8 +1,8 @@
-import type { RouteHandler } from 'module/serve/types';
+import { defineRouteHandler } from 'module/serve';
 
 /**
- * GET /api/test
+ * ?
  */
-export default (
+export default defineRouteHandler(
   (context) => context.json({ message: 'Hello world' })
-) satisfies RouteHandler;
+);

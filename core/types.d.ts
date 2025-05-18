@@ -16,6 +16,20 @@ export interface ComponentDeclaration extends TemplateDeclaration
 }
 
 
+export interface ComponentMetadata
+{
+  /**
+   * An array of component names that this component depends on.
+   */
+  dependencies: string[];
+
+  /**
+   * Specifies whether the component has a stylesheet.
+   */
+  stylesheet: boolean;
+}
+
+
 export interface LayoutDeclaration extends TemplateDeclaration
 {
   /**
@@ -75,6 +89,26 @@ export interface ViewDeclaration extends TemplateDeclaration
    */
   handler: MaybeNull<string>;
 }
+
+
+export interface ViewMetadata
+{
+  /**
+   * An array of component names that this component depends on.
+   */
+  dependencies: string[];
+
+  /**
+   * ?
+   */
+  layouts: string[];
+
+  /**
+   * An optional stylesheet file to be used for styling the component.
+   */
+  stylesheet: boolean;
+}
+
 
 //
 // --- TYPES ------------------------------------------------------------------

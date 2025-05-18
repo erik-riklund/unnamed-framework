@@ -1,5 +1,6 @@
 {
-  "component declaration": {
+  "component declaration":
+  {
     "scope": "json",
     "prefix": "component",
     "body": [
@@ -12,23 +13,31 @@
       "}"
     ]
   },
-  "view declaration": {
-    "scope": "json",
-    "prefix": "view",
+
+  "endpoint declaration":
+  {
+    "scope": "typescript",
+    "prefix": "endpoint",
     "body": [
-      "{",
-      "  \"handler\": null,",
-      "  \"template\": \"${1}.fml\",",
-      "  \"stylesheet\": null,",
-      "  \"dependencies\": []",
-      "}"
+      "import { defineRouteHandler } from 'module/serve';",
+      "",
+      "/**",
+      " * ?",
+      " */",
+      "export default defineRouteHandler(",
+      "  (context) => context.json({ message: 'Hello world' })",
+      ");"
     ]
   },
-  "task declaration": {
-    "scope": "javascript,typescript",
+
+  "task declaration":
+  {
+    "scope": "typescript",
     "prefix": "task",
     "body": [
+      "import { print } from 'library/helpers/print';",
       "import { defineTask } from 'module/pipeline';",
+      "import { pipeline } from 'core/build/pipeline';",
       "",
       "/**",
       " * ?",
@@ -39,6 +48,20 @@
       "    console.log('Hello world');",
       "  }",
       ");"
+    ]
+  },
+
+  "view declaration":
+  {
+    "scope": "json",
+    "prefix": "view",
+    "body": [
+      "{",
+      "  \"handler\": null,",
+      "  \"template\": \"${1}.fml\",",
+      "  \"stylesheet\": null,",
+      "  \"dependencies\": []",
+      "}"
     ]
   }
 }

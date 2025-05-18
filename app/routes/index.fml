@@ -10,5 +10,6 @@
 
   <body>
     {{! _content }}
+    <component test />
   </body>
 </html>
