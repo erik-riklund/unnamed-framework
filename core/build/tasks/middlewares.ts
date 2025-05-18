@@ -29,6 +29,8 @@ export default defineTask(
       const httpMethod = method === 'ALL' ? `'ALL' as HttpMethod` : `HttpMethod.${ method }`;
       middlewares.push(`{ path:'${ routePath }', method: ${ httpMethod }, handler: handler_${ routeId } },`);
       imports.push(`import handler_${ routeId } from 'route/${ file }';`);
+
+      print(`  ${ method } {cyan:${ routePath }/*} -> {green:./app/routes/${ file }}`);
     }
 
     const content = [

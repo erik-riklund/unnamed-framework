@@ -26,10 +26,10 @@ export default defineTask(
       const routePath = pipeline.executeTask('createRoutePath', file);
       const routeId = Bun.hash(routePath).toString(24);
 
-      print(`  GET {cyan:${ routePath }} -> {green:./app/routes/${ file }}`);
-
       endpoints.push(`{ path: '${ routePath }', method: HttpMethod.${ method }, handler: endpoint_${ routeId } },`);
       imports.push(`import endpoint_${ routeId } from 'route/${ file }';`);
+
+      print(`  GET {cyan:${ routePath }} -> {green:./app/routes/${ file }}`);
     }
 
     const content = [

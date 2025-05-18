@@ -20,7 +20,8 @@
   },
   "scripts": {
     "build": "bun run './core/build.ts' --clean",
-    "build-dev": "bun run --watch --no-clear-screen './core/build.ts' --dev",
+    "build-dev": "bun run --watch './core/build.ts' --dev",
+    "build-dev-clean": "bun run --watch './core/build.ts' --dev --clean",
     "serve": "bun run './core/index.ts'",
     "serve-dev": "wait-on './runtime/routes.ts' && bun run --watch './core/index.ts'",
     "start": "npm-run-all build serve"

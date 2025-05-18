@@ -48,8 +48,8 @@ export const useServe = ({ assets, middlewares, port, routes }: ServerConfig) =>
     }
   );
 
-  print(`\nserver is listening on port {yellow:${ process.env.PORT || port || 800 }}.`)
-  print(`- serving static files at {cyan:${ assetOptions.route }} from {yellow:${ assetOptions.folder }}`);
+  print(`server is {green:listening} on port {yellow:${ process.env.PORT || port || 800 }}.\n`)
+  print(`  > serving {yellow:static files} at {cyan:${ assetOptions.route }} from {green:${ assetOptions.folder }}`);
 };
 
 /**
